@@ -9,14 +9,24 @@ import os
 app = Flask(__name__, template_folder='.', static_folder='.', static_url_path='')
 app.config.from_object(Config)
 
+# OpenAI Client
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
+# Init DB
 init_db()
 
+
+# =========================
+# HOME
+# =========================
 @app.route("/")
 def index():
     return render_template("index.html")
 
+
+# =========================
+# REGISTER
+# =========================
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -25,13 +35,19 @@ def register():
         password = request.form.get("password", "").strip()
 
         success, message = register_user(name, email, password)
+
         if success:
             flash(message, "success")
             return redirect(url_for("login"))
+
         flash(message, "danger")
 
     return render_template("register.html")
 
+
+# =========================
+# LOGIN
+# =========================
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -39,26 +55,41 @@ def login():
         password = request.form.get("password", "").strip()
 
         success, result = login_user(email, password)
+
         if success:
             session["user_id"] = result["id"]
             session["user_name"] = result["name"]
             return redirect(url_for("dashboard"))
+
         flash(result, "danger")
 
     return render_template("login.html")
 
+
+# =========================
+# LOGOUT
+# =========================
 @app.route("/logout")
 def logout():
     session.clear()
     flash("Logged out successfully.", "info")
     return redirect(url_for("login"))
 
+
+# =========================
+# DASHBOARD
+# =========================
 @app.route("/dashboard")
 def dashboard():
     if "user_id" not in session:
         return redirect(url_for("login"))
+
     return render_template("dashboard.html", user_name=session.get("user_name"))
 
+
+# =========================
+# ASSESSMENT
+# =========================
 @app.route("/assessment", methods=["GET", "POST"])
 def assessment():
     if "user_id" not in session:
@@ -66,14 +97,19 @@ def assessment():
 
     conn = get_db_connection()
     cursor = conn.cursor()
+
     cursor.execute("SELECT * FROM questions")
     questions = cursor.fetchall()
+
     conn.close()
 
     if request.method == "POST":
         answer_map = {}
+
         for question in questions:
-            answer_map[str(question["id"])] = request.form.get(f"question_{question['id']}")
+            answer_map[str(question["id"])] = request.form.get(
+                f"question_{question['id']}"
+            )
 
         top_category, careers = calculate_recommendation(answer_map)
 
@@ -82,12 +118,18 @@ def assessment():
             return redirect(url_for("assessment"))
 
         save_result(session["user_id"], top_category, careers)
+
         session["top_category"] = top_category
         session["recommended_ids"] = [career["id"] for career in careers]
+
         return redirect(url_for("result"))
 
     return render_template("assessment.html", questions=questions)
 
+
+# =========================
+# RESULT
+# =========================
 @app.route("/result")
 def result():
     if "user_id" not in session:
@@ -95,18 +137,33 @@ def result():
 
     top_category = session.get("top_category")
     recommended_ids = session.get("recommended_ids", [])
+
     careers = []
 
     if recommended_ids:
         conn = get_db_connection()
         cursor = conn.cursor()
+
         placeholders = ",".join("?" * len(recommended_ids))
-        cursor.execute(f"SELECT * FROM careers WHERE id IN ({placeholders})", tuple(recommended_ids))
+
+        cursor.execute(
+            f"SELECT * FROM careers WHERE id IN ({placeholders})",
+            tuple(recommended_ids)
+        )
+
         careers = cursor.fetchall()
         conn.close()
 
-    return render_template("result.html", top_category=top_category, careers=careers)
+    return render_template(
+        "result.html",
+        top_category=top_category,
+        careers=careers
+    )
 
+
+# =========================
+# HISTORY
+# =========================
 @app.route("/history")
 def history():
     if "user_id" not in session:
@@ -114,11 +171,21 @@ def history():
 
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM results WHERE user_id = ? ORDER BY created_at DESC", (session["user_id"],))
+
+    cursor.execute(
+        "SELECT * FROM results WHERE user_id = ? ORDER BY created_at DESC",
+        (session["user_id"],)
+    )
+
     results = cursor.fetchall()
     conn.close()
+
     return render_template("history.html", results=results)
 
+
+# =========================
+# ADMIN LOGIN
+# =========================
 @app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
@@ -126,14 +193,20 @@ def admin_login():
         password = request.form.get("password", "").strip()
 
         success, result = login_admin(username, password)
+
         if success:
             session["admin_id"] = result["id"]
             session["admin_name"] = result["username"]
             return redirect(url_for("admin_dashboard"))
+
         flash(result, "danger")
 
     return render_template("admin_login.html")
 
+
+# =========================
+# ADMIN DASHBOARD
+# =========================
 @app.route("/admin/dashboard")
 def admin_dashboard():
     if "admin_id" not in session:
@@ -141,12 +214,16 @@ def admin_dashboard():
 
     conn = get_db_connection()
     cursor = conn.cursor()
+
     cursor.execute("SELECT COUNT(*) AS total_users FROM users")
     total_users = cursor.fetchone()["total_users"]
+
     cursor.execute("SELECT COUNT(*) AS total_results FROM results")
     total_results = cursor.fetchone()["total_results"]
+
     cursor.execute("SELECT * FROM users ORDER BY created_at DESC LIMIT 10")
     users = cursor.fetchall()
+
     cursor.execute("""
         SELECT results.*, users.name
         FROM results
@@ -154,6 +231,7 @@ def admin_dashboard():
         ORDER BY results.created_at DESC
         LIMIT 15
     """)
+
     results = cursor.fetchall()
     conn.close()
 
@@ -165,15 +243,17 @@ def admin_dashboard():
         results=results
     )
 
+
 # =========================
-# AI Chatbot Page
+# CHATBOT PAGE
 # =========================
 @app.route("/chatbot")
 def chatbot():
     return render_template("chatbot.html")
 
+
 # =========================
-# AI Chat API
+# CHAT API
 # =========================
 @app.route("/ask-ai", methods=["POST"])
 def ask_ai():
@@ -187,8 +267,16 @@ def ask_ai():
             model="gpt-4.1-mini",
             input=f"""
 You are a helpful AI Career Guidance Assistant for students.
-Give clear, professional, and easy-to-understand answers.
-Keep answers focused on careers, skills, courses, jobs, and future scope.
+
+Give clear, professional, easy answers.
+
+Focus on:
+- careers
+- courses
+- jobs
+- salary
+- future scope
+- skills
 
 Student Question:
 {user_message}
@@ -197,9 +285,13 @@ Student Question:
 
         return jsonify({"reply": response.output_text})
 
- except Exception as e:
-    return jsonify({"reply": str(e)})
+    except Exception as e:
+        return jsonify({"reply": str(e)})
 
+
+# =========================
+# RUN APP
+# =========================
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
