@@ -197,8 +197,8 @@ Student Question:
 
         return jsonify({"reply": response.output_text})
 
-    except Exception:
-        return jsonify({"reply": "AI is temporarily unavailable. Please try again later."})
+ except Exception as e:
+    return jsonify({"reply": str(e)})
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
