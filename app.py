@@ -1,11 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 from config import Config
 from db import init_db, get_db_connection
 from auth import register_user, login_user, login_admin
 from recommendation import calculate_recommendation, save_result
+from openai import OpenAI
+import os
 
 app = Flask(__name__, template_folder='.', static_folder='.', static_url_path='')
 app.config.from_object(Config)
+
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 init_db()
 
@@ -161,7 +165,40 @@ def admin_dashboard():
         results=results
     )
 
-import os
+# =========================
+# AI Chatbot Page
+# =========================
+@app.route("/chatbot")
+def chatbot():
+    return render_template("chatbot.html")
+
+# =========================
+# AI Chat API
+# =========================
+@app.route("/ask-ai", methods=["POST"])
+def ask_ai():
+    user_message = request.json.get("message", "").strip()
+
+    if not user_message:
+        return jsonify({"reply": "Please type a question."})
+
+    try:
+        response = client.responses.create(
+            model="gpt-4.1-mini",
+            input=f"""
+You are a helpful AI Career Guidance Assistant for students.
+Give clear, professional, and easy-to-understand answers.
+Keep answers focused on careers, skills, courses, jobs, and future scope.
+
+Student Question:
+{user_message}
+"""
+        )
+
+        return jsonify({"reply": response.output_text})
+
+    except Exception:
+        return jsonify({"reply": "AI is temporarily unavailable. Please try again later."})
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
