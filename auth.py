@@ -1,5 +1,5 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from modules.db import get_db_connection
+from db import get_db_connection
 
 def register_user(name, email, password):
     if not name or not email or not password:
