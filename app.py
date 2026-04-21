@@ -4,7 +4,7 @@ from db import init_db, get_db_connection
 from auth import register_user, login_user, login_admin
 from recommendation import calculate_recommendation, save_result
 
-app = Flask(__name__, template_folder='.', static_folder='.')
+app = Flask(__name__, template_folder='.', static_folder='.', static_url_path='')
 app.config.from_object(Config)
 
 init_db()
