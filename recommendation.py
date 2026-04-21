@@ -1,5 +1,5 @@
 from collections import defaultdict
-from db ... import get_db_connection
+from db import get_db_connection
 
 def calculate_recommendation(answer_map):
     conn = get_db_connection()
