@@ -3,30 +3,25 @@ from config import Config
 from db import init_db, get_db_connection
 from auth import register_user, login_user, login_admin
 from recommendation import calculate_recommendation, save_result
-from openai import OpenAI
+import google.generativeai as genai
 import os
 
 app = Flask(__name__, template_folder='.', static_folder='.', static_url_path='')
 app.config.from_object(Config)
 
-# OpenAI Client
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+# Gemini Client
+genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 # Init DB
 init_db()
 
 
-# =========================
-# HOME
-# =========================
 @app.route("/")
 def index():
     return render_template("index.html")
 
 
-# =========================
-# REGISTER
-# =========================
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -45,9 +40,6 @@ def register():
     return render_template("register.html")
 
 
-# =========================
-# LOGIN
-# =========================
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -66,9 +58,6 @@ def login():
     return render_template("login.html")
 
 
-# =========================
-# LOGOUT
-# =========================
 @app.route("/logout")
 def logout():
     session.clear()
@@ -76,9 +65,6 @@ def logout():
     return redirect(url_for("login"))
 
 
-# =========================
-# DASHBOARD
-# =========================
 @app.route("/dashboard")
 def dashboard():
     if "user_id" not in session:
@@ -87,9 +73,6 @@ def dashboard():
     return render_template("dashboard.html", user_name=session.get("user_name"))
 
 
-# =========================
-# ASSESSMENT
-# =========================
 @app.route("/assessment", methods=["GET", "POST"])
 def assessment():
     if "user_id" not in session:
@@ -100,7 +83,6 @@ def assessment():
 
     cursor.execute("SELECT * FROM questions")
     questions = cursor.fetchall()
-
     conn.close()
 
     if request.method == "POST":
@@ -127,9 +109,6 @@ def assessment():
     return render_template("assessment.html", questions=questions)
 
 
-# =========================
-# RESULT
-# =========================
 @app.route("/result")
 def result():
     if "user_id" not in session:
@@ -137,7 +116,6 @@ def result():
 
     top_category = session.get("top_category")
     recommended_ids = session.get("recommended_ids", [])
-
     careers = []
 
     if recommended_ids:
@@ -145,7 +123,6 @@ def result():
         cursor = conn.cursor()
 
         placeholders = ",".join("?" * len(recommended_ids))
-
         cursor.execute(
             f"SELECT * FROM careers WHERE id IN ({placeholders})",
             tuple(recommended_ids)
@@ -161,9 +138,6 @@ def result():
     )
 
 
-# =========================
-# HISTORY
-# =========================
 @app.route("/history")
 def history():
     if "user_id" not in session:
@@ -183,9 +157,6 @@ def history():
     return render_template("history.html", results=results)
 
 
-# =========================
-# ADMIN LOGIN
-# =========================
 @app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
@@ -204,9 +175,6 @@ def admin_login():
     return render_template("admin_login.html")
 
 
-# =========================
-# ADMIN DASHBOARD
-# =========================
 @app.route("/admin/dashboard")
 def admin_dashboard():
     if "admin_id" not in session:
@@ -244,17 +212,11 @@ def admin_dashboard():
     )
 
 
-# =========================
-# CHATBOT PAGE
-# =========================
 @app.route("/chatbot")
 def chatbot():
     return render_template("chatbot.html")
 
 
-# =========================
-# CHAT API
-# =========================
 @app.route("/ask-ai", methods=["POST"])
 def ask_ai():
     user_message = request.json.get("message", "").strip()
@@ -263,35 +225,31 @@ def ask_ai():
         return jsonify({"reply": "Please type a question."})
 
     try:
-        response = client.responses.create(
-            model="gpt-4.1-mini",
-            input=f"""
+        prompt = f"""
 You are a helpful AI Career Guidance Assistant for students.
 
-Give clear, professional, easy answers.
-
+Give clear, simple, professional, and helpful answers.
 Focus on:
 - careers
 - courses
 - jobs
+- skills
 - salary
 - future scope
-- skills
 
 Student Question:
 {user_message}
 """
-        )
 
-        return jsonify({"reply": response.output_text})
+        response = model.generate_content(prompt)
+        reply = response.text if hasattr(response, "text") else "No response generated."
+
+        return jsonify({"reply": reply})
 
     except Exception as e:
         return jsonify({"reply": str(e)})
 
 
-# =========================
-# RUN APP
-# =========================
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
