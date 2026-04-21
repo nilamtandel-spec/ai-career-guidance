@@ -16,6 +16,7 @@
 
         <div class="nav-links">
             <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('chatbot') }}">AI Chatbot</a>
 
             {% if session.get('user_id') %}
                 <a href="{{ url_for('dashboard') }}">Dashboard</a>
