@@ -4,21 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}AI Career Guidance{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-    <link rel="stylesheet" href="/style.css">
+
 <body>
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="logo">AI Career Guidance</div>
+
         <div class="nav-links">
             <a href="{{ url_for('index') }}">Home</a>
+
             {% if session.get('user_id') %}
                 <a href="{{ url_for('dashboard') }}">Dashboard</a>
                 <a href="{{ url_for('assessment') }}">Assessment</a>
                 <a href="{{ url_for('history') }}">History</a>
                 <a href="{{ url_for('logout') }}">Logout</a>
+
             {% elif session.get('admin_id') %}
                 <a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a>
+
             {% else %}
                 <a href="{{ url_for('login') }}">Login</a>
                 <a href="{{ url_for('register') }}">Register</a>
@@ -27,16 +34,26 @@
         </div>
     </nav>
 
+    <!-- Main Content -->
     <main class="container">
+
+        <!-- Flash Messages -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert {{ category }}">{{ message }}</div>
+                    <div class="alert {{ category }}">
+                        {{ message }}
+                    </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
 
+        <!-- Page Content -->
         {% block content %}{% endblock %}
+
     </main>
+
+    <!-- Optional JS -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
