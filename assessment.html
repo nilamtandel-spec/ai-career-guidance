@@ -1,13 +1,22 @@
 {% extends 'layout.html' %}
-{% block title %}Home{% endblock %}
+{% block title %}Assessment{% endblock %}
 
 {% block content %}
-<div class="hero">
-    <h1>AI Career Guidance System for Students</h1>
-    <p>Discover the best career path based on your interests, strengths, and skills.</p>
-    <div class="hero-buttons">
-        <a class="btn" href="{{ url_for('register') }}">Get Started</a>
-        <a class="btn secondary" href="{{ url_for('login') }}">Student Login</a>
-    </div>
+<div class="assessment-card">
+    <h2>Career Assessment Test</h2>
+    <form method="POST">
+        {% for question in questions %}
+            <div class="question-block">
+                <p><strong>Q{{ loop.index }}. {{ question.question_text }}</strong></p>
+
+                <label><input type="radio" name="question_{{ question.id }}" value="A" required> {{ question.option_a }}</label><br>
+                <label><input type="radio" name="question_{{ question.id }}" value="B" required> {{ question.option_b }}</label><br>
+                <label><input type="radio" name="question_{{ question.id }}" value="C" required> {{ question.option_c }}</label><br>
+                <label><input type="radio" name="question_{{ question.id }}" value="D" required> {{ question.option_d }}</label>
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn">Submit Assessment</button>
+    </form>
 </div>
 {% endblock %}

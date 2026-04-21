@@ -1,41 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}AI Career Guidance{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <nav class="navbar">
-        <div class="logo">AI Career Guidance</div>
-        <div class="nav-links">
-            <a href="{{ url_for('index') }}">Home</a>
-            {% if session.get('user_id') %}
-                <a href="{{ url_for('dashboard') }}">Dashboard</a>
-                <a href="{{ url_for('assessment') }}">Assessment</a>
-                <a href="{{ url_for('history') }}">History</a>
-                <a href="{{ url_for('logout') }}">Logout</a>
-            {% elif session.get('admin_id') %}
-                <a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a>
-            {% else %}
-                <a href="{{ url_for('login') }}">Login</a>
-                <a href="{{ url_for('register') }}">Register</a>
-                <a href="{{ url_for('admin_login') }}">Admin</a>
-            {% endif %}
-        </div>
-    </nav>
+{% extends 'layout.html' %}
+{% block title %}Dashboard{% endblock %}
 
-    <main class="container">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert {{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
-        {% block content %}{% endblock %}
-    </main>
-</body>
-</html>
+{% block content %}
+<div class="dashboard-card">
+    <h2>Welcome, {{ user_name }}</h2>
+    <p>Take the assessment test to discover your ideal career path.</p>
+    <a class="btn" href="{{ url_for('assessment') }}">Start Assessment</a>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>AI Career Guidance System for Students</h1>
+    <p>Discover the best career path based on your interests, strengths, and skills.</p>
+    <div class="hero-buttons">
+        <a class="btn" href="{{ url_for('register') }}">Get Started</a>
+        <a class="btn secondary" href="{{ url_for('login') }}">Student Login</a>
+    </div>
+</div>
+{% endblock %}

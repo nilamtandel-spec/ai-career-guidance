@@ -1,14 +1,23 @@
 {% extends 'layout.html' %}
-{% block title %}Register{% endblock %}
+{% block title %}Result{% endblock %}
 
 {% block content %}
-<div class="form-card">
-    <h2>Student Registration</h2>
-    <form method="POST">
-        <input type="text" name="name" placeholder="Enter your name" required>
-        <input type="email" name="email" placeholder="Enter your email" required>
-        <input type="password" name="password" placeholder="Enter your password" required>
-        <button type="submit" class="btn">Register</button>
-    </form>
+<div class="result-card">
+    <h2>Your Recommended Career Category</h2>
+    <h3>{{ top_category }}</h3>
+
+    <h2>Recommended Careers</h2>
+    <div class="career-grid">
+        {% for career in careers %}
+            <div class="career-card">
+                <h3>{{ career.career_name }}</h3>
+                <p><strong>Description:</strong> {{ career.description }}</p>
+                <p><strong>Skills:</strong> {{ career.required_skills }}</p>
+                <p><strong>Courses:</strong> {{ career.courses }}</p>
+                <p><strong>Salary:</strong> {{ career.salary_range }}</p>
+                <p><strong>Future Scope:</strong> {{ career.future_scope }}</p>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
