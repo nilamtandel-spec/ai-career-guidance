@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from config import Config
-from modules.db import init_db, get_db_connection
-from modules.auth import register_user, login_user, login_admin
-from modules.recommendation import calculate_recommendation, save_result
+from db import init_db, get_db_connection
+from auth import register_user, login_user, login_admin
+from recommendation import calculate_recommendation, save_result
 
 app = Flask(__name__)
 app.config.from_object(Config)
