@@ -6,34 +6,27 @@
 body{
     background:#0f1117;
 }
-
 .container{
     max-width:100%;
     padding:0;
 }
-
 .dashboard-shell{
     display:grid;
     grid-template-columns:260px 1fr;
     min-height:calc(100vh - 110px);
-    gap:0;
 }
-
 .sidebar{
     background:#111318;
     border-right:1px solid rgba(255,255,255,0.06);
     padding:24px 18px;
     color:white;
-    min-height:100%;
 }
-
 .logo-box{
     display:flex;
     align-items:center;
     gap:12px;
     margin-bottom:26px;
 }
-
 .logo-icon{
     width:42px;
     height:42px;
@@ -44,15 +37,12 @@ body{
     align-items:center;
     justify-content:center;
     font-weight:900;
-    font-size:18px;
 }
-
 .logo-text{
     font-size:26px;
     font-weight:800;
     color:#f8fafc;
 }
-
 .org-box{
     background:#161a22;
     border:1px solid rgba(255,255,255,0.06);
@@ -62,13 +52,11 @@ body{
     font-size:14px;
     margin-bottom:22px;
 }
-
 .sidebar-menu{
     display:flex;
     flex-direction:column;
     gap:8px;
 }
-
 .menu-item{
     display:flex;
     align-items:center;
@@ -81,22 +69,14 @@ body{
     font-size:15px;
     transition:.2s ease;
 }
-
 .menu-item:hover{
     background:#1a1f29;
     color:#fff;
 }
-
 .menu-item.active{
     background:#facc15;
     color:#111827;
 }
-
-.menu-icon{
-    width:20px;
-    text-align:center;
-}
-
 .sidebar-footer{
     margin-top:40px;
     background:#171a21;
@@ -105,19 +85,16 @@ body{
     padding:18px;
     color:#cbd5e1;
 }
-
 .sidebar-footer h4{
     color:#fff;
     margin-bottom:8px;
     font-size:16px;
 }
-
 .sidebar-footer p{
     font-size:13px;
     line-height:1.6;
     margin-bottom:14px;
 }
-
 .upgrade-btn{
     display:inline-block;
     background:#facc15;
@@ -127,13 +104,11 @@ body{
     font-weight:800;
     text-decoration:none;
 }
-
 .main-panel{
     background:#0f1117;
     color:white;
     padding:24px;
 }
-
 .topbar{
     display:flex;
     justify-content:space-between;
@@ -142,24 +117,14 @@ body{
     margin-bottom:22px;
     flex-wrap:wrap;
 }
-
 .topbar h1{
     font-size:32px;
     font-weight:800;
 }
-
 .topbar p{
     color:#94a3b8;
     margin-top:4px;
 }
-
-.top-actions{
-    display:flex;
-    gap:12px;
-    align-items:center;
-    flex-wrap:wrap;
-}
-
 .top-chip{
     background:#171a21;
     border:1px solid rgba(255,255,255,0.06);
@@ -169,39 +134,33 @@ body{
     font-size:14px;
     font-weight:700;
 }
-
 .stats-grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:18px;
     margin-bottom:22px;
 }
-
 .stat-card{
     border-radius:20px;
     padding:22px;
     color:#111827;
     box-shadow:0 10px 25px rgba(0,0,0,0.18);
 }
-
 .stat-card h4{
     font-size:15px;
     margin-bottom:12px;
     font-weight:700;
     color:#334155;
 }
-
 .stat-card .value{
     font-size:38px;
     font-weight:800;
     margin-bottom:10px;
 }
-
 .stat-card .sub{
     font-size:14px;
     font-weight:700;
 }
-
 .card-blue{ background:#dbeafe; }
 .card-pink{ background:#fee2e2; }
 .card-purple{ background:#f3e8ff; }
@@ -213,7 +172,6 @@ body{
     gap:20px;
     margin-bottom:22px;
 }
-
 .panel{
     background:#171a21;
     border:1px solid rgba(255,255,255,0.06);
@@ -221,69 +179,44 @@ body{
     padding:22px;
     color:white;
 }
-
 .panel h3{
     font-size:26px;
     font-weight:800;
     margin-bottom:18px;
 }
-
 .chart-box{
     height:280px;
     background:linear-gradient(180deg,rgba(250,204,21,0.08),rgba(250,204,21,0.02));
     border-radius:18px;
-    display:flex;
-    align-items:flex-end;
     padding:20px;
-    overflow:hidden;
-    position:relative;
 }
-
 .chart-line{
-    position:absolute;
-    inset:20px;
+    height:100%;
     display:flex;
     align-items:flex-end;
     gap:8px;
 }
-
 .chart-line span{
     flex:1;
     background:linear-gradient(180deg,#facc15,#ca8a04);
     border-radius:10px 10px 0 0;
-    opacity:.95;
 }
-
-.chart-line span:nth-child(1){height:45%}
-.chart-line span:nth-child(2){height:62%}
-.chart-line span:nth-child(3){height:30%}
-.chart-line span:nth-child(4){height:70%}
-.chart-line span:nth-child(5){height:52%}
-.chart-line span:nth-child(6){height:78%}
-.chart-line span:nth-child(7){height:40%}
-.chart-line span:nth-child(8){height:68%}
-.chart-line span:nth-child(9){height:57%}
-.chart-line span:nth-child(10){height:74%}
-.chart-line span:nth-child(11){height:35%}
-.chart-line span:nth-child(12){height:60%}
-
 .ring-box{
     height:280px;
     display:flex;
     align-items:center;
     justify-content:center;
+    position:relative;
 }
-
 .ring{
     width:180px;
     height:180px;
     border-radius:50%;
-    background:conic-gradient(#2563eb 0 72%, #2a2f3a 72% 100%);
+    background:conic-gradient(#2563eb 0 {{ readiness_score }}%, #2a2f3a {{ readiness_score }}% 100%);
     display:flex;
     align-items:center;
     justify-content:center;
 }
-
 .ring::after{
     content:"";
     width:120px;
@@ -292,39 +225,32 @@ body{
     background:#171a21;
     position:absolute;
 }
-
 .ring-center{
     position:relative;
     z-index:2;
     text-align:center;
 }
-
 .ring-center strong{
     display:block;
     font-size:34px;
     font-weight:800;
 }
-
 .ring-center span{
     color:#94a3b8;
     font-size:14px;
 }
-
 .bottom-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:20px;
 }
-
 .table-wrap{
     overflow-x:auto;
 }
-
 .dark-table{
     width:100%;
     border-collapse:collapse;
 }
-
 .dark-table th{
     text-align:left;
     padding:14px 12px;
@@ -332,81 +258,59 @@ body{
     font-size:13px;
     border-bottom:1px solid rgba(255,255,255,0.08);
 }
-
 .dark-table td{
     padding:16px 12px;
     color:#e2e8f0;
     font-size:14px;
     border-bottom:1px solid rgba(255,255,255,0.06);
 }
-
 .dark-table tr:hover td{
     background:rgba(255,255,255,0.02);
 }
-
 .quick-actions{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:14px;
 }
-
 .action-card{
     background:#111318;
     border:1px solid rgba(255,255,255,0.06);
     border-radius:16px;
     padding:18px;
 }
-
 .action-card h4{
     font-size:18px;
     margin-bottom:8px;
 }
-
 .action-card p{
     color:#94a3b8;
     font-size:13px;
     line-height:1.6;
     margin-bottom:12px;
 }
-
 .action-card a{
     color:#facc15;
     font-weight:700;
     text-decoration:none;
 }
-
+.empty-note{
+    color:#94a3b8;
+    font-size:14px;
+}
 @media (max-width:1200px){
-    .stats-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-    .analytics-grid,
-    .bottom-grid{
-        grid-template-columns:1fr;
-    }
+    .stats-grid{ grid-template-columns:repeat(2,1fr); }
+    .analytics-grid, .bottom-grid{ grid-template-columns:1fr; }
 }
-
 @media (max-width:900px){
-    .dashboard-shell{
-        grid-template-columns:1fr;
-    }
-    .sidebar{
-        min-height:auto;
-    }
+    .dashboard-shell{ grid-template-columns:1fr; }
 }
-
 @media (max-width:640px){
-    .stats-grid,
-    .quick-actions{
-        grid-template-columns:1fr;
-    }
-    .main-panel{
-        padding:16px;
-    }
+    .stats-grid, .quick-actions{ grid-template-columns:1fr; }
+    .main-panel{ padding:16px; }
 }
 </style>
 
 <div class="dashboard-shell">
-
     <aside class="sidebar">
         <div class="logo-box">
             <div class="logo-icon">CP</div>
@@ -418,27 +322,23 @@ body{
         </div>
 
         <div class="sidebar-menu">
-            <a href="{{ url_for('dashboard') }}" class="menu-item active">
-                <span class="menu-icon">▣</span> Dashboard
-            </a>
-            <a href="{{ url_for('assessment') }}" class="menu-item">
-                <span class="menu-icon">◎</span> Insights Test
-            </a>
-            <a href="{{ url_for('chatbot') }}" class="menu-item">
-                <span class="menu-icon">✦</span> Career AI
-            </a>
-            <a href="{{ url_for('history') }}" class="menu-item">
-                <span class="menu-icon">☰</span> Reports
-            </a>
-            <a href="{{ url_for('logout') }}" class="menu-item">
-                <span class="menu-icon">↩</span> Logout
-            </a>
+            <a href="{{ url_for('dashboard') }}" class="menu-item active">▣ Dashboard</a>
+            <a href="{{ url_for('assessment') }}" class="menu-item">◎ Insights Test</a>
+            <a href="{{ url_for('chatbot') }}" class="menu-item">✦ Career AI</a>
+            <a href="{{ url_for('history') }}" class="menu-item">☰ Reports</a>
+            <a href="{{ url_for('logout') }}" class="menu-item">↩ Logout</a>
         </div>
 
         <div class="sidebar-footer">
-            <h4>Upgrade your profile</h4>
-            <p>Complete your assessment and use Career AI to unlock better recommendations.</p>
-            <a href="{{ url_for('assessment') }}" class="upgrade-btn">Upgrade</a>
+            <h4>Latest Category</h4>
+            <p>
+                {% if latest_result %}
+                    {{ latest_result.top_category }}
+                {% else %}
+                    No assessment completed yet.
+                {% endif %}
+            </p>
+            <a href="{{ url_for('assessment') }}" class="upgrade-btn">Take Test</a>
         </div>
     </aside>
 
@@ -446,59 +346,57 @@ body{
         <div class="topbar">
             <div>
                 <h1>Dashboard</h1>
-                <p>Welcome back, {{ user_name }}. Track your growth and career activity.</p>
+                <p>Welcome back, {{ user_name }}. Here is your real progress.</p>
             </div>
-
-            <div class="top-actions">
-                <div class="top-chip">Dark Theme</div>
-                <div class="top-chip">CareerPilot AI</div>
-            </div>
+            <div class="top-chip">Readiness {{ readiness_score }}%</div>
         </div>
 
         <div class="stats-grid">
             <div class="stat-card card-blue">
-                <h4>Total Guidance</h4>
-                <div class="value">40</div>
-                <div class="sub">↑ Career sessions completed</div>
+                <h4>Total Assessments</h4>
+                <div class="value">{{ total_results }}</div>
+                <div class="sub">Your completed career results</div>
             </div>
 
             <div class="stat-card card-pink">
-                <h4>Remaining Tasks</h4>
-                <div class="value">03</div>
-                <div class="sub">Assessment, skills, roadmap</div>
+                <h4>Recent 7 Days</h4>
+                <div class="value">{{ recent_results_count }}</div>
+                <div class="sub">Assessments completed recently</div>
             </div>
 
             <div class="stat-card card-purple">
-                <h4>Recently Added</h4>
-                <div class="value">12</div>
-                <div class="sub">New career prompts available</div>
+                <h4>Categories Explored</h4>
+                <div class="value">{{ unique_categories }}</div>
+                <div class="sub">Unique career areas explored</div>
             </div>
 
             <div class="stat-card card-green">
-                <h4>Completed</h4>
-                <div class="value">82%</div>
-                <div class="sub">↑ Your readiness score</div>
+                <h4>Readiness Score</h4>
+                <div class="value">{{ readiness_score }}%</div>
+                <div class="sub">Based on your activity</div>
             </div>
         </div>
 
         <div class="analytics-grid">
             <section class="panel">
-                <h3>Career Progress</h3>
+                <h3>Career Activity</h3>
                 <div class="chart-box">
                     <div class="chart-line">
-                        <span></span><span></span><span></span><span></span><span></span><span></span>
-                        <span></span><span></span><span></span><span></span><span></span><span></span>
+                        {% set heights = [35, 55, 42, 70, 48, 75, 40, 62, 50, 78, 46, 68] %}
+                        {% for h in heights %}
+                        <span style="height: {{ h }}%;"></span>
+                        {% endfor %}
                     </div>
                 </div>
             </section>
 
             <section class="panel">
-                <h3>Today's Progress</h3>
+                <h3>Progress Ring</h3>
                 <div class="ring-box">
                     <div class="ring"></div>
                     <div class="ring-center">
-                        <strong>72%</strong>
-                        <span>Remaining</span>
+                        <strong>{{ readiness_score }}%</strong>
+                        <span>Readiness</span>
                     </div>
                 </div>
             </section>
@@ -506,26 +404,26 @@ body{
 
         <div class="bottom-grid">
             <section class="panel">
-                <h3>Recent Activity</h3>
+                <h3>Recent Results</h3>
                 <div class="table-wrap">
+                    {% if recent_results %}
                     <table class="dark-table">
                         <tr>
-                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Recommended Careers</th>
                             <th>Date</th>
                         </tr>
+                        {% for item in recent_results %}
                         <tr>
-                            <td>Career guidance session opened</td>
-                            <td>Today</td>
+                            <td>{{ item.top_category }}</td>
+                            <td>{{ item.recommended_careers }}</td>
+                            <td>{{ item.created_at }}</td>
                         </tr>
-                        <tr>
-                            <td>Assessment page visited</td>
-                            <td>Today</td>
-                        </tr>
-                        <tr>
-                            <td>Career AI chatbot used</td>
-                            <td>Today</td>
-                        </tr>
+                        {% endfor %}
                     </table>
+                    {% else %}
+                    <div class="empty-note">No results available yet. Take your first assessment.</div>
+                    {% endif %}
                 </div>
             </section>
 
@@ -534,31 +432,36 @@ body{
                 <div class="quick-actions">
                     <div class="action-card">
                         <h4>Start Test</h4>
-                        <p>Take the insights test to unlock career recommendations.</p>
+                        <p>Take the insights test to generate recommendations.</p>
                         <a href="{{ url_for('assessment') }}">Open Assessment</a>
                     </div>
 
                     <div class="action-card">
                         <h4>Ask AI</h4>
-                        <p>Use the chatbot for course, salary, and skill guidance.</p>
+                        <p>Use chatbot for course, skill, and salary guidance.</p>
                         <a href="{{ url_for('chatbot') }}">Open Career AI</a>
                     </div>
 
                     <div class="action-card">
-                        <h4>View Reports</h4>
-                        <p>Check your previous recommendations and results.</p>
+                        <h4>View History</h4>
+                        <p>Check your previous recommendations and reports.</p>
                         <a href="{{ url_for('history') }}">Open Reports</a>
                     </div>
 
                     <div class="action-card">
-                        <h4>Explore Growth</h4>
-                        <p>Track your improvement and future direction.</p>
-                        <a href="{{ url_for('dashboard') }}">Refresh Dashboard</a>
+                        <h4>Latest Result</h4>
+                        <p>
+                            {% if latest_result %}
+                                {{ latest_result.top_category }} on {{ latest_result.created_at }}
+                            {% else %}
+                                No result yet
+                            {% endif %}
+                        </p>
+                        <a href="{{ url_for('assessment') }}">Improve Score</a>
                     </div>
                 </div>
             </section>
         </div>
     </main>
-
 </div>
 {% endblock %}
