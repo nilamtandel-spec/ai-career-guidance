@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{% block title %}AI Career Guidance{% endblock %}</title>
+<title>{% block title %}CareerPilot AI{% endblock %}</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -232,30 +232,31 @@ a{
 <nav class="navbar">
     <div class="nav-wrap">
 
-        <div class="brand-logo">CP</div>
-<div class="brand-text">
-    <strong>CareerPilot AI</strong>
-    <span>AI-Powered Career Growth Platform</span>
-</div>
+        <a href="{{ url_for('index') }}" class="brand">
+            <div class="brand-logo">CP</div>
+            <div class="brand-text">
+                <strong>CareerPilot AI</strong>
+                <span>AI-Powered Career Growth Platform</span>
+            </div>
         </a>
 
         <div class="nav-links">
 
-            <a class="nav-link" href="{{ url_for('index') }}">Home</a>
-            <a class="nav-link" href="{{ url_for('chatbot') }}">AI Chatbot</a>
+            <a class="nav-link" href="{{ url_for('index') }}">Platform</a>
+            <a class="nav-link" href="{{ url_for('chatbot') }}">Career AI</a>
 
             {% if session.get('user_id') %}
-                <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
-                <a class="nav-link" href="{{ url_for('assessment') }}">Assessment</a>
-                <a class="nav-link" href="{{ url_for('history') }}">History</a>
+                <a class="nav-link" href="{{ url_for('dashboard') }}">Workspace</a>
+                <a class="nav-link" href="{{ url_for('assessment') }}">Insights Test</a>
+                <a class="nav-link" href="{{ url_for('history') }}">Reports</a>
                 <a class="nav-link primary" href="{{ url_for('logout') }}">Logout</a>
 
             {% elif session.get('admin_id') %}
-                <a class="nav-link primary" href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a>
+                <a class="nav-link primary" href="{{ url_for('admin_dashboard') }}">Admin Analytics</a>
 
             {% else %}
                 <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-                <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                <a class="nav-link" href="{{ url_for('register') }}">Get Started</a>
                 <a class="nav-link primary" href="{{ url_for('admin_login') }}">Admin</a>
             {% endif %}
 
@@ -284,10 +285,9 @@ a{
     <div class="footer-card">
 
         <div>
-            <div class="footer-title">AI Career Guidance Platform</div>
+            <div class="footer-title">CareerPilot AI</div>
             <div class="footer-text">
-                Helping students choose the right course, career path, skills, and future opportunities
-                with a premium digital guidance experience.
+                The modern AI platform helping students make smarter career decisions with confidence.
             </div>
         </div>
 
