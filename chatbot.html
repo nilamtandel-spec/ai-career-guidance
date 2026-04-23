@@ -6,87 +6,396 @@
     <title>AI Career Chatbot</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
-        .chat-wrap{
-            max-width: 900px;
-            margin: 30px auto;
-            background: white;
-            padding: 24px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        .chat-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef4ff 0%, #f8fbff 100%);
+            padding: 30px 15px;
         }
-        .chat-box{
-            height: 420px;
-            overflow-y: auto;
-            border: 1px solid #dbeafe;
-            border-radius: 14px;
-            padding: 15px;
-            background: #f8fbff;
-            margin-bottom: 15px;
+
+        .chat-shell {
+            max-width: 980px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.10);
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
         }
-        .msg{
-            margin-bottom: 12px;
-            padding: 12px 14px;
-            border-radius: 12px;
-            max-width: 75%;
-        }
-        .user{
-            background: #2563eb;
+
+        .chat-header {
+            background: linear-gradient(90deg, #0f172a 0%, #1d4ed8 100%);
             color: white;
-            margin-left: auto;
+            padding: 24px;
         }
-        .bot{
-            background: #e2e8f0;
-            color: #111827;
+
+        .chat-header h1 {
+            margin: 0 0 6px;
+            font-size: 28px;
         }
-        .chat-input{
+
+        .chat-header p {
+            margin: 0;
+            opacity: 0.92;
+            font-size: 14px;
+        }
+
+        .chat-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .chat-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.12);
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #22c55e;
+            border-radius: 50%;
+        }
+
+        .chat-body {
+            padding: 20px;
+            background: #f8fbff;
+        }
+
+        .chat-suggestions {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
         }
-        .chat-input input{
+
+        .suggestion-btn {
+            border: 1px solid #dbeafe;
+            background: white;
+            color: #1d4ed8;
+            padding: 10px 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .suggestion-btn:hover {
+            background: #eff6ff;
+        }
+
+        .chat-box {
+            height: 460px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #dbeafe;
+            border-radius: 18px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            scroll-behavior: smooth;
+        }
+
+        .msg-row {
+            display: flex;
+            flex-direction: column;
+            max-width: 78%;
+        }
+
+        .msg-row.user-row {
+            align-self: flex-end;
+        }
+
+        .msg-row.bot-row {
+            align-self: flex-start;
+        }
+
+        .msg {
+            padding: 13px 15px;
+            border-radius: 16px;
+            line-height: 1.6;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .msg.user {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border-bottom-right-radius: 6px;
+        }
+
+        .msg.bot {
+            background: #eef2ff;
+            color: #111827;
+            border-bottom-left-radius: 6px;
+        }
+
+        .msg-time {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 4px;
+            padding: 0 4px;
+        }
+
+        .typing {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            min-height: 20px;
+        }
+
+        .typing span {
+            width: 8px;
+            height: 8px;
+            background: #64748b;
+            border-radius: 50%;
+            animation: bounce 1.2s infinite ease-in-out;
+        }
+
+        .typing span:nth-child(2) { animation-delay: 0.2s; }
+        .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0.7); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        .chat-controls {
+            margin-top: 16px;
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+            flex-wrap: wrap;
+        }
+
+        .chat-input-wrap {
             flex: 1;
-            padding: 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
+            display: flex;
+            gap: 10px;
+            min-width: 260px;
         }
-        .chat-input button{
-            padding: 12px 20px;
+
+        .chat-input-wrap input {
+            flex: 1;
+            border: 1px solid #cbd5e1;
+            border-radius: 14px;
+            padding: 14px 16px;
+            font-size: 15px;
+            outline: none;
+            background: white;
+        }
+
+        .chat-input-wrap input:focus {
+            border-color: #93c5fd;
+            box-shadow: 0 0 0 4px rgba(59,130,246,0.10);
+        }
+
+        .chat-btn {
             border: none;
+            border-radius: 14px;
+            padding: 14px 18px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.2s ease;
+        }
+
+        .send-btn {
             background: #2563eb;
             color: white;
-            border-radius: 10px;
-            cursor: pointer;
+        }
+
+        .send-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .clear-btn {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .clear-btn:hover {
+            background: #cbd5e1;
+        }
+
+        .chat-note {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            .chat-header h1 {
+                font-size: 23px;
+            }
+
+            .chat-box {
+                height: 420px;
+            }
+
+            .msg-row {
+                max-width: 92%;
+            }
+
+            .chat-controls {
+                flex-direction: column;
+            }
+
+            .chat-input-wrap {
+                width: 100%;
+            }
+
+            .chat-btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="chat-wrap">
-        <h2>🤖 AI Career Guidance Chatbot</h2>
-        <p>Ask anything about careers, courses, skills, or future job options.</p>
+    <div class="chat-page">
+        <div class="chat-shell">
+            <div class="chat-header">
+                <div class="chat-topbar">
+                    <div>
+                        <h1>🤖 Premium Career Guidance Chatbot</h1>
+                        <p>Ask about careers, courses, salary, future scope, skills, and job roles.</p>
+                    </div>
+                    <div class="chat-status">
+                        <span class="status-dot"></span>
+                        <span>Career Assistant Online</span>
+                    </div>
+                </div>
+            </div>
 
-        <div id="chatBox" class="chat-box">
-            <div class="msg bot">Hello! Ask me any career-related question.</div>
-        </div>
+            <div class="chat-body">
+                <div class="chat-suggestions">
+                    <button class="suggestion-btn" onclick="fillSuggestion('Best career after BSc IT?')">Best career after BSc IT?</button>
+                    <button class="suggestion-btn" onclick="fillSuggestion('What is BCA?')">What is BCA?</button>
+                    <button class="suggestion-btn" onclick="fillSuggestion('UI UX career scope')">UI UX career scope</button>
+                    <button class="suggestion-btn" onclick="fillSuggestion('Cyber Security salary')">Cyber Security salary</button>
+                    <button class="suggestion-btn" onclick="fillSuggestion('Best course after 12th science')">Best course after 12th science</button>
+                </div>
 
-        <div class="chat-input">
-            <input type="text" id="msg" placeholder="Type your question here...">
-            <button onclick="sendMsg()">Send</button>
+                <div id="chatBox" class="chat-box">
+                    <div class="msg-row bot-row">
+                        <div class="msg bot">
+                            Hello! I am your premium Career Guidance Assistant.<br><br>
+                            You can ask me about:
+                            <br>• courses
+                            <br>• careers
+                            <br>• salary
+                            <br>• skills
+                            <br>• jobs
+                            <br>• future scope
+                        </div>
+                        <div class="msg-time">Now</div>
+                    </div>
+                </div>
+
+                <div class="chat-controls">
+                    <div class="chat-input-wrap">
+                        <input type="text" id="msg" placeholder="Type your career question here...">
+                        <button class="chat-btn send-btn" onclick="sendMsg()">Send</button>
+                    </div>
+                    <button class="chat-btn clear-btn" onclick="clearChat()">Clear Chat</button>
+                </div>
+
+                <div class="chat-note">
+                    Tip: Press Enter to send your question.
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
+        function currentTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes().toString().padStart(2, "0");
+            let ampm = hours >= 12 ? "PM" : "AM";
+            hours = hours % 12 || 12;
+            return `${hours}:${minutes} ${ampm}`;
+        }
+
+        function addMessage(text, type) {
+            const chatBox = document.getElementById("chatBox");
+            const row = document.createElement("div");
+            row.className = `msg-row ${type}-row`;
+
+            const bubble = document.createElement("div");
+            bubble.className = `msg ${type}`;
+            bubble.innerHTML = text.replace(/\n/g, "<br>");
+
+            const time = document.createElement("div");
+            time.className = "msg-time";
+            time.textContent = currentTime();
+
+            row.appendChild(bubble);
+            row.appendChild(time);
+            chatBox.appendChild(row);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function addTyping() {
+            const chatBox = document.getElementById("chatBox");
+            const row = document.createElement("div");
+            row.className = "msg-row bot-row";
+            row.id = "typingRow";
+
+            const bubble = document.createElement("div");
+            bubble.className = "msg bot";
+            bubble.innerHTML = `
+                <div class="typing">
+                    <span></span><span></span><span></span>
+                </div>
+            `;
+
+            row.appendChild(bubble);
+            chatBox.appendChild(row);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function removeTyping() {
+            const typingRow = document.getElementById("typingRow");
+            if (typingRow) typingRow.remove();
+        }
+
+        function fillSuggestion(text) {
+            document.getElementById("msg").value = text;
+            document.getElementById("msg").focus();
+        }
+
+        function clearChat() {
+            const chatBox = document.getElementById("chatBox");
+            chatBox.innerHTML = `
+                <div class="msg-row bot-row">
+                    <div class="msg bot">
+                        Chat cleared. Ask me another career question.
+                    </div>
+                    <div class="msg-time">${currentTime()}</div>
+                </div>
+            `;
+        }
+
         async function sendMsg() {
             const input = document.getElementById("msg");
-            const chatBox = document.getElementById("chatBox");
             const message = input.value.trim();
 
             if (!message) return;
 
-            chatBox.innerHTML += `<div class="msg user">${message}</div>`;
+            addMessage(message, "user");
             input.value = "";
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            chatBox.innerHTML += `<div class="msg bot" id="loadingMsg">Thinking...</div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
+            addTyping();
 
             try {
                 const response = await fetch("/ask-ai", {
@@ -98,22 +407,16 @@
                 });
 
                 const data = await response.json();
-                const loading = document.getElementById("loadingMsg");
-                if (loading) loading.remove();
-
-                chatBox.innerHTML += `<div class="msg bot">${data.reply}</div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
+                removeTyping();
+                addMessage(data.reply || "No response received.", "bot");
             } catch (error) {
-                const loading = document.getElementById("loadingMsg");
-                if (loading) loading.remove();
-
-                chatBox.innerHTML += `<div class="msg bot">Something went wrong. Please try again.</div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
+                removeTyping();
+                addMessage("Something went wrong. Please try again.", "bot");
             }
         }
 
-        document.getElementById("msg").addEventListener("keypress", function(e){
-            if(e.key === "Enter"){
+        document.getElementById("msg").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
                 sendMsg();
             }
         });
