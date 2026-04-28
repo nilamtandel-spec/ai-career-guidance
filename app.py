@@ -189,12 +189,11 @@ def admin_dashboard():
 # CHATBOT PAGE
 # ===============================
 @app.route("/chatbot")
-def chatbot_page():
+def chatbot():
     if "user_id" not in session:
         return redirect(url_for("login"))
 
     return render_template("chatbot.html")
-
 
 # ===============================
 # CHATBOT API
