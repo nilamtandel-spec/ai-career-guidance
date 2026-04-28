@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=".")
 app.secret_key = "careerpilot_secret_key"
 
 
