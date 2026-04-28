@@ -1,528 +1,528 @@
 {% extends 'layout.html' %}
-{% block title %}Home{% endblock %}
+{% block title %}CareerPilot AI | Platform{% endblock %}
 
 {% block content %}
 <style>
-    .premium-home {
-        display: flex;
-        flex-direction: column;
-        gap: 28px;
+.home-wrap{
+    display:flex;
+    flex-direction:column;
+    gap:34px;
+}
+
+.hero{
+    background:linear-gradient(135deg,#0f172a 0%,#1d4ed8 55%,#60a5fa 100%);
+    color:white;
+    border-radius:32px;
+    padding:70px 54px;
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    gap:34px;
+    align-items:center;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 24px 55px rgba(15,23,42,.18);
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    width:320px;
+    height:320px;
+    border-radius:50%;
+    background:rgba(255,255,255,.08);
+    right:-90px;
+    top:-90px;
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    background:rgba(255,255,255,.08);
+    left:-70px;
+    bottom:-70px;
+}
+
+.hero-left,.hero-right{
+    position:relative;
+    z-index:2;
+}
+
+.badge{
+    display:inline-block;
+    background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.18);
+    padding:9px 15px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:800;
+    margin-bottom:18px;
+}
+
+.hero h1{
+    font-size:56px;
+    line-height:1.08;
+    font-weight:900;
+    margin-bottom:18px;
+}
+
+.hero p{
+    color:rgba(255,255,255,.9);
+    font-size:18px;
+    line-height:1.8;
+    max-width:720px;
+    margin-bottom:28px;
+}
+
+.actions{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    display:inline-block;
+    padding:15px 24px;
+    border-radius:15px;
+    font-weight:900;
+    text-decoration:none;
+    transition:.22s ease;
+}
+
+.btn.primary{
+    background:white;
+    color:#0f172a;
+}
+
+.btn.primary:hover{
+    transform:translateY(-2px);
+    background:#eff6ff;
+}
+
+.btn.secondary{
+    background:rgba(255,255,255,.14);
+    color:white;
+    border:1px solid rgba(255,255,255,.22);
+}
+
+.btn.secondary:hover{
+    transform:translateY(-2px);
+    background:rgba(255,255,255,.22);
+}
+
+.hero-card{
+    background:rgba(255,255,255,.13);
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:26px;
+    padding:26px;
+    backdrop-filter:blur(12px);
+}
+
+.hero-card h3{
+    font-size:24px;
+    margin-bottom:16px;
+}
+
+.hero-card ul{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.hero-card li{
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,.12);
+    font-size:15px;
+}
+
+.hero-card li:last-child{
+    border-bottom:none;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.stat{
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:24px;
+    padding:24px;
+    box-shadow:0 10px 28px rgba(15,23,42,.06);
+}
+
+.stat strong{
+    display:block;
+    font-size:34px;
+    color:#1d4ed8;
+    margin-bottom:6px;
+}
+
+.stat span{
+    color:#64748b;
+    font-weight:700;
+    font-size:14px;
+}
+
+.section-head{
+    text-align:center;
+    max-width:760px;
+    margin:0 auto 24px;
+}
+
+.section-head h2{
+    font-size:36px;
+    color:#0f172a;
+    font-weight:900;
+    margin-bottom:10px;
+}
+
+.section-head p{
+    color:#64748b;
+    line-height:1.8;
+}
+
+.features{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.feature{
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:26px;
+    padding:26px;
+    box-shadow:0 12px 30px rgba(15,23,42,.06);
+    transition:.22s ease;
+}
+
+.feature:hover{
+    transform:translateY(-5px);
+    box-shadow:0 22px 38px rgba(15,23,42,.1);
+}
+
+.icon{
+    width:56px;
+    height:56px;
+    border-radius:18px;
+    background:#eff6ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+    margin-bottom:18px;
+}
+
+.feature h3{
+    font-size:21px;
+    margin-bottom:10px;
+    color:#0f172a;
+}
+
+.feature p{
+    color:#64748b;
+    line-height:1.7;
+    font-size:14px;
+}
+
+.careers{
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:30px;
+    padding:34px;
+    box-shadow:0 12px 30px rgba(15,23,42,.06);
+}
+
+.career-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.career{
+    background:linear-gradient(180deg,#ffffff,#f8fbff);
+    border:1px solid #e2e8f0;
+    border-radius:24px;
+    padding:24px;
+}
+
+.tag{
+    display:inline-block;
+    padding:7px 11px;
+    border-radius:999px;
+    background:#dbeafe;
+    color:#1d4ed8;
+    font-size:12px;
+    font-weight:900;
+    margin-bottom:12px;
+}
+
+.career h3{
+    font-size:21px;
+    margin-bottom:10px;
+    color:#0f172a;
+}
+
+.career p{
+    color:#64748b;
+    line-height:1.7;
+    font-size:14px;
+    margin-bottom:14px;
+}
+
+.meta{
+    font-size:13px;
+    font-weight:800;
+    color:#334155;
+}
+
+.steps{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.step{
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:26px;
+    padding:28px;
+    box-shadow:0 12px 30px rgba(15,23,42,.06);
+}
+
+.num{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:#2563eb;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    margin-bottom:16px;
+}
+
+.step h3{
+    font-size:22px;
+    margin-bottom:10px;
+}
+
+.step p{
+    color:#64748b;
+    line-height:1.7;
+}
+
+.cta{
+    background:linear-gradient(135deg,#111827,#0f172a);
+    color:white;
+    border-radius:32px;
+    padding:48px;
+    text-align:center;
+    box-shadow:0 24px 55px rgba(15,23,42,.18);
+}
+
+.cta h2{
+    font-size:38px;
+    margin-bottom:12px;
+}
+
+.cta p{
+    color:rgba(255,255,255,.78);
+    max-width:760px;
+    margin:0 auto 24px;
+    line-height:1.8;
+}
+
+@media(max-width:1100px){
+    .hero,.features,.career-grid,.stats,.steps{
+        grid-template-columns:1fr 1fr;
     }
-
-    .hero-section {
-        background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 55%, #60a5fa 100%);
-        color: white;
-        border-radius: 28px;
-        padding: 60px 50px;
-        display: grid;
-        grid-template-columns: 1.3fr 0.7fr;
-        gap: 28px;
-        align-items: center;
-        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
-        overflow: hidden;
-        position: relative;
+    .hero{
+        grid-template-columns:1fr;
     }
+}
 
-    .hero-section::before {
-        content: "";
-        position: absolute;
-        width: 260px;
-        height: 260px;
-        background: rgba(255,255,255,0.08);
-        border-radius: 50%;
-        top: -60px;
-        right: -60px;
+@media(max-width:700px){
+    .hero,.features,.career-grid,.stats,.steps{
+        grid-template-columns:1fr;
     }
-
-    .hero-section::after {
-        content: "";
-        position: absolute;
-        width: 180px;
-        height: 180px;
-        background: rgba(255,255,255,0.08);
-        border-radius: 50%;
-        bottom: -50px;
-        left: -40px;
+    .hero{
+        padding:40px 24px;
     }
-
-    .hero-content {
-        position: relative;
-        z-index: 1;
+    .hero h1{
+        font-size:36px;
     }
-
-    .hero-badge {
-        display: inline-block;
-        background: rgba(255,255,255,0.16);
-        padding: 8px 14px;
-        border-radius: 999px;
-        font-size: 13px;
-        font-weight: 600;
-        margin-bottom: 16px;
+    .careers,.cta{
+        padding:24px;
     }
-
-    .hero-title {
-        font-size: 50px;
-        line-height: 1.1;
-        font-weight: 800;
-        margin-bottom: 16px;
-    }
-
-    .hero-text {
-        font-size: 17px;
-        line-height: 1.7;
-        color: rgba(255,255,255,0.92);
-        max-width: 650px;
-        margin-bottom: 26px;
-    }
-
-    .hero-actions {
-        display: flex;
-        gap: 14px;
-        flex-wrap: wrap;
-    }
-
-    .hero-btn {
-        display: inline-block;
-        padding: 14px 24px;
-        border-radius: 14px;
-        text-decoration: none;
-        font-weight: 700;
-        transition: 0.25s ease;
-    }
-
-    .hero-btn.primary {
-        background: white;
-        color: #0f172a;
-    }
-
-    .hero-btn.primary:hover {
-        transform: translateY(-2px);
-        background: #eff6ff;
-    }
-
-    .hero-btn.secondary {
-        background: rgba(255,255,255,0.15);
-        color: white;
-        border: 1px solid rgba(255,255,255,0.25);
-    }
-
-    .hero-btn.secondary:hover {
-        transform: translateY(-2px);
-        background: rgba(255,255,255,0.22);
-    }
-
-    .hero-panel {
-        position: relative;
-        z-index: 1;
-        background: rgba(255,255,255,0.12);
-        border: 1px solid rgba(255,255,255,0.18);
-        border-radius: 22px;
-        padding: 24px;
-        backdrop-filter: blur(8px);
-    }
-
-    .hero-panel h3 {
-        font-size: 22px;
-        margin-bottom: 14px;
-    }
-
-    .hero-panel ul {
-        list-style: none;
-        padding: 0;
-        margin: 0 0 18px 0;
-    }
-
-    .hero-panel li {
-        padding: 10px 0;
-        border-bottom: 1px solid rgba(255,255,255,0.12);
-        font-size: 15px;
-    }
-
-    .hero-panel li:last-child {
-        border-bottom: none;
-    }
-
-    .mini-stats {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 14px;
-    }
-
-    .mini-card {
-        background: white;
-        color: #0f172a;
-        border-radius: 18px;
-        padding: 18px 14px;
-        text-align: center;
-    }
-
-    .mini-card h4 {
-        font-size: 25px;
-        margin: 0 0 4px 0;
-        color: #2563eb;
-    }
-
-    .mini-card p {
-        margin: 0;
-        font-size: 12px;
-        color: #475569;
-        font-weight: 600;
-    }
-
-    .section-title {
-        font-size: 30px;
-        font-weight: 800;
-        color: #0f172a;
-        margin-bottom: 6px;
-    }
-
-    .section-subtitle {
-        color: #64748b;
-        margin-bottom: 20px;
-    }
-
-    .feature-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 18px;
-    }
-
-    .feature-card {
-        background: white;
-        border-radius: 22px;
-        padding: 24px 20px;
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
-        border: 1px solid #e2e8f0;
-        transition: 0.25s ease;
-    }
-
-    .feature-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 20px 35px rgba(15, 23, 42, 0.10);
-    }
-
-    .feature-icon {
-        width: 54px;
-        height: 54px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 16px;
-        font-size: 24px;
-        margin-bottom: 16px;
-        background: linear-gradient(135deg, #dbeafe, #eff6ff);
-    }
-
-    .feature-card h3 {
-        margin: 0 0 10px 0;
-        font-size: 20px;
-        color: #0f172a;
-    }
-
-    .feature-card p {
-        margin: 0;
-        color: #64748b;
-        line-height: 1.6;
-        font-size: 14px;
-    }
-
-    .career-section {
-        background: linear-gradient(180deg, #ffffff, #f8fbff);
-        border-radius: 26px;
-        padding: 30px;
-        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
-        border: 1px solid #e2e8f0;
-    }
-
-    .career-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 18px;
-    }
-
-    .career-card {
-        background: white;
-        border-radius: 20px;
-        padding: 22px;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
-        transition: 0.25s ease;
-    }
-
-    .career-card:hover {
-        transform: translateY(-4px);
-    }
-
-    .career-card h3 {
-        margin: 0 0 8px 0;
-        color: #0f172a;
-        font-size: 19px;
-    }
-
-    .career-tag {
-        display: inline-block;
-        padding: 6px 10px;
-        border-radius: 999px;
-        font-size: 12px;
-        font-weight: 700;
-        color: #1d4ed8;
-        background: #dbeafe;
-        margin-bottom: 12px;
-    }
-
-    .career-card p {
-        color: #64748b;
-        font-size: 14px;
-        line-height: 1.6;
-        margin-bottom: 14px;
-    }
-
-    .career-meta {
-        font-size: 13px;
-        font-weight: 600;
-        color: #0f172a;
-    }
-
-    .steps-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
-    }
-
-    .step-card {
-        background: white;
-        border-radius: 22px;
-        padding: 24px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
-    }
-
-    .step-number {
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        background: #2563eb;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 800;
-        margin-bottom: 14px;
-    }
-
-    .step-card h3 {
-        margin: 0 0 10px 0;
-        color: #0f172a;
-    }
-
-    .step-card p {
-        margin: 0;
-        color: #64748b;
-        line-height: 1.6;
-        font-size: 14px;
-    }
-
-    .cta-section {
-        background: linear-gradient(135deg, #1e293b, #0f172a);
-        color: white;
-        border-radius: 26px;
-        padding: 40px;
-        text-align: center;
-        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.16);
-    }
-
-    .cta-section h2 {
-        font-size: 34px;
-        margin-bottom: 10px;
-    }
-
-    .cta-section p {
-        color: rgba(255,255,255,0.85);
-        max-width: 760px;
-        margin: 0 auto 20px;
-        line-height: 1.7;
-    }
-
-    @media (max-width: 1100px) {
-        .hero-section,
-        .feature-grid,
-        .career-grid,
-        .steps-grid {
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .hero-section {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    @media (max-width: 700px) {
-        .hero-section,
-        .feature-grid,
-        .career-grid,
-        .steps-grid,
-        .mini-stats {
-            grid-template-columns: 1fr;
-        }
-
-        .hero-section {
-            padding: 36px 22px;
-        }
-
-        .hero-title {
-            font-size: 34px;
-        }
-
-        .career-section,
-        .cta-section {
-            padding: 22px;
-        }
-    }
+}
 </style>
 
-<div class="premium-home">
+<div class="home-wrap">
 
-    <section class="hero-section">
-        <div class="hero-content">
-            <div class="hero-badge">AI Powered Career Guidance Platform</div>
-            <h1 class="hero-title">Discover the Right Career Path for Your Future</h1>
-            <p class="hero-text">
-                Get personalized career suggestions, smart guidance, career roadmap support,
-                and chatbot assistance based on your interests, skills, and goals.
+    <section class="hero">
+        <div class="hero-left">
+            <div class="badge">AI-Powered Career Growth Platform</div>
+            <h1>Accelerate Your Career Decisions with AI</h1>
+            <p>
+                CareerPilot AI helps students choose the right course, understand future careers,
+                explore salaries, build skills, and take confident decisions through smart guidance.
             </p>
 
-            <div class="hero-actions">
-                <a href="{{ url_for('register') }}" class="hero-btn primary">Start Your Journey</a>
-                <a href="{{ url_for('chatbot') }}" class="hero-btn secondary">Try AI Chatbot</a>
+            <div class="actions">
+                <a href="{{ url_for('register') }}" class="btn primary">Get Started Free</a>
+                <a href="{{ url_for('chatbot') }}" class="btn secondary">Launch Career AI</a>
             </div>
         </div>
 
-        <div class="hero-panel">
-            <h3>Platform Highlights</h3>
-            <ul>
-                <li>✔ Smart Career Guidance Quiz</li>
-                <li>✔ AI Career Chatbot Support</li>
-                <li>✔ Personalized Course Direction</li>
-                <li>✔ Future Scope & Salary Guidance</li>
-            </ul>
-
-            <div class="mini-stats">
-                <div class="mini-card">
-                    <h4>100+</h4>
-                    <p>Career Queries</p>
-                </div>
-                <div class="mini-card">
-                    <h4>4</h4>
-                    <p>Main Domains</p>
-                </div>
-                <div class="mini-card">
-                    <h4>24/7</h4>
-                    <p>Guidance Support</p>
-                </div>
+        <div class="hero-right">
+            <div class="hero-card">
+                <h3>What You Can Do</h3>
+                <ul>
+                    <li>✔ Take career assessment</li>
+                    <li>✔ Explore AI guidance</li>
+                    <li>✔ View personalized results</li>
+                    <li>✔ Understand skills and salary</li>
+                    <li>✔ Track reports and progress</li>
+                </ul>
             </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stat">
+            <strong>100+</strong>
+            <span>Career Questions</span>
+        </div>
+        <div class="stat">
+            <strong>24/7</strong>
+            <span>Guidance Support</span>
+        </div>
+        <div class="stat">
+            <strong>4+</strong>
+            <span>Career Domains</span>
+        </div>
+        <div class="stat">
+            <strong>AI</strong>
+            <span>Smart Assistant</span>
         </div>
     </section>
 
     <section>
-        <h2 class="section-title">Why Students Use This Platform</h2>
-        <p class="section-subtitle">Designed to guide students with a premium digital experience.</p>
+        <div class="section-head">
+            <h2>Everything Students Need to Plan Their Career</h2>
+            <p>
+                A complete career guidance workspace with assessment, chatbot, reports, and future-ready career information.
+            </p>
+        </div>
 
-        <div class="feature-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🎯</div>
-                <h3>Career Quiz</h3>
-                <p>Take an intelligent assessment and discover career options suited to your strengths and interests.</p>
+        <div class="features">
+            <div class="feature">
+                <div class="icon">🎯</div>
+                <h3>Career Assessment</h3>
+                <p>Answer simple questions and get suitable career direction based on your interests.</p>
             </div>
 
-            <div class="feature-card">
-                <div class="feature-icon">🤖</div>
-                <h3>AI Chatbot</h3>
-                <p>Ask questions about courses, jobs, salary, skills, and career opportunities anytime.</p>
+            <div class="feature">
+                <div class="icon">🤖</div>
+                <h3>Career AI</h3>
+                <p>Ask about courses, salary, jobs, future scope, and skills anytime.</p>
             </div>
 
-            <div class="feature-card">
-                <div class="feature-icon">📈</div>
-                <h3>Growth Insights</h3>
-                <p>Understand future scope, trending careers, and skills that matter in today’s market.</p>
+            <div class="feature">
+                <div class="icon">📊</div>
+                <h3>Reports</h3>
+                <p>View your career results and previous recommendations in one place.</p>
             </div>
 
-            <div class="feature-card">
-                <div class="feature-icon">🧠</div>
-                <h3>Smart Guidance</h3>
-                <p>Get practical recommendations based on real student concerns like stream, interests, and goals.</p>
+            <div class="feature">
+                <div class="icon">🚀</div>
+                <h3>Growth Focus</h3>
+                <p>Understand skills and roadmap needed for your chosen career path.</p>
             </div>
         </div>
     </section>
 
-    <section class="career-section">
-        <h2 class="section-title">Trending Career Paths</h2>
-        <p class="section-subtitle">Explore some of the most popular and future-ready options.</p>
+    <section class="careers">
+        <div class="section-head">
+            <h2>Trending Career Paths</h2>
+            <p>Explore popular career options students are choosing for future growth.</p>
+        </div>
 
         <div class="career-grid">
-            <div class="career-card">
-                <span class="career-tag">Technology</span>
+            <div class="career">
+                <span class="tag">Technology</span>
                 <h3>Software Developer</h3>
-                <p>Great for students who enjoy coding, logic, web development, and problem solving.</p>
-                <div class="career-meta">Skills: Python, Java, SQL</div>
+                <p>Best for students who enjoy coding, logic, and building applications.</p>
+                <div class="meta">Skills: Python, Java, SQL</div>
             </div>
 
-            <div class="career-card">
-                <span class="career-tag">Analytics</span>
+            <div class="career">
+                <span class="tag">Analytics</span>
                 <h3>Data Analyst</h3>
-                <p>Best for students interested in data, business insights, reports, and decision making.</p>
-                <div class="career-meta">Skills: Excel, SQL, Python</div>
+                <p>Great for students interested in data, reports, dashboards, and insights.</p>
+                <div class="meta">Skills: Excel, SQL, Power BI</div>
             </div>
 
-            <div class="career-card">
-                <span class="career-tag">Design</span>
+            <div class="career">
+                <span class="tag">Design</span>
                 <h3>UI/UX Designer</h3>
-                <p>Perfect for creative students who want to design user-friendly websites and apps.</p>
-                <div class="career-meta">Skills: Figma, Creativity, UX</div>
+                <p>Perfect for creative students interested in websites and app design.</p>
+                <div class="meta">Skills: Figma, UX, Creativity</div>
             </div>
 
-            <div class="career-card">
-                <span class="career-tag">Security</span>
+            <div class="career">
+                <span class="tag">Security</span>
                 <h3>Cyber Security</h3>
-                <p>Ideal for students interested in ethical hacking, network security, and digital protection.</p>
-                <div class="career-meta">Skills: Networking, Linux, Security</div>
+                <p>Ideal for students interested in ethical hacking and digital safety.</p>
+                <div class="meta">Skills: Networking, Linux, Security</div>
             </div>
         </div>
     </section>
 
     <section>
-        <h2 class="section-title">How It Works</h2>
-        <p class="section-subtitle">Simple steps to get smart career guidance.</p>
+        <div class="section-head">
+            <h2>How CareerPilot AI Works</h2>
+            <p>Simple, guided, and student-friendly career planning journey.</p>
+        </div>
 
-        <div class="steps-grid">
-            <div class="step-card">
-                <div class="step-number">1</div>
+        <div class="steps">
+            <div class="step">
+                <div class="num">1</div>
                 <h3>Create Account</h3>
-                <p>Register and access your personalized student dashboard.</p>
+                <p>Register and access your personalized CareerPilot workspace.</p>
             </div>
 
-            <div class="step-card">
-                <div class="step-number">2</div>
-                <h3>Take Assessment</h3>
-                <p>Complete the career quiz and let the system understand your interests.</p>
+            <div class="step">
+                <div class="num">2</div>
+                <h3>Take Insights Test</h3>
+                <p>Complete assessment and get suitable career recommendations.</p>
             </div>
 
-            <div class="step-card">
-                <div class="step-number">3</div>
-                <h3>Explore Guidance</h3>
-                <p>View career recommendations and use the AI chatbot for deeper support.</p>
+            <div class="step">
+                <div class="num">3</div>
+                <h3>Ask Career AI</h3>
+                <p>Use the chatbot to understand salary, skills, roadmap, and future scope.</p>
             </div>
         </div>
     </section>
 
-    <section class="cta-section">
-        <h2>Start Building Your Career with Confidence</h2>
+    <section class="cta">
+        <h2>Start Your Career Planning Today</h2>
         <p>
-            Whether you are confused after 12th, planning after graduation, or exploring modern careers,
-            this platform helps you move in the right direction with a smart and premium guidance experience.
+            Whether you are confused after 12th, planning after graduation, or exploring future careers,
+            CareerPilot AI helps you make smarter decisions.
         </p>
-        <div class="hero-actions" style="justify-content:center;">
-            <a href="{{ url_for('register') }}" class="hero-btn primary">Create Free Account</a>
-            <a href="{{ url_for('login') }}" class="hero-btn secondary">Student Login</a>
+
+        <div class="actions" style="justify-content:center;">
+            <a href="{{ url_for('register') }}" class="btn primary">Get Started Free</a>
+            <a href="{{ url_for('login') }}" class="btn secondary">Sign In</a>
         </div>
     </section>
 
