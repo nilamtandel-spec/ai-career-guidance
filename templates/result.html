@@ -1,1 +1,411 @@
+{% extends 'layout.html' %}
+{% block title %}Result{% endblock %}
 
+{% block content %}
+<style>
+.result-wrap{
+    display:flex;
+    flex-direction:column;
+    gap:26px;
+}
+
+.result-hero{
+    background:linear-gradient(135deg,#0f172a 0%,#1d4ed8 60%,#60a5fa 100%);
+    color:white;
+    border-radius:28px;
+    padding:36px;
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:22px;
+    box-shadow:0 22px 45px rgba(15,23,42,.16);
+    position:relative;
+    overflow:hidden;
+}
+
+.result-hero::before{
+    content:"";
+    position:absolute;
+    width:240px;
+    height:240px;
+    border-radius:50%;
+    background:rgba(255,255,255,.08);
+    right:-70px;
+    top:-50px;
+}
+
+.result-hero::after{
+    content:"";
+    position:absolute;
+    width:170px;
+    height:170px;
+    border-radius:50%;
+    background:rgba(255,255,255,.08);
+    left:-40px;
+    bottom:-50px;
+}
+
+.result-left,
+.result-right{
+    position:relative;
+    z-index:2;
+}
+
+.result-badge{
+    display:inline-block;
+    padding:8px 14px;
+    border-radius:999px;
+    background:rgba(255,255,255,.14);
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:14px;
+}
+
+.result-title{
+    font-size:36px;
+    font-weight:800;
+    line-height:1.15;
+    margin-bottom:12px;
+}
+
+.result-text{
+    color:rgba(255,255,255,.92);
+    line-height:1.7;
+    margin-bottom:18px;
+    max-width:650px;
+}
+
+.category-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:white;
+    color:#0f172a;
+    padding:12px 16px;
+    border-radius:16px;
+    font-weight:800;
+    box-shadow:0 10px 24px rgba(15,23,42,.14);
+}
+
+.insight-card{
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:24px;
+    padding:24px;
+}
+
+.insight-card h3{
+    font-size:22px;
+    margin-bottom:14px;
+}
+
+.insight-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.insight-list li{
+    padding:10px 0;
+    border-bottom:1px solid rgba(255,255,255,.1);
+    font-size:14px;
+}
+
+.insight-list li:last-child{
+    border-bottom:none;
+}
+
+.section-title{
+    font-size:28px;
+    font-weight:800;
+    color:#0f172a;
+    margin-bottom:6px;
+}
+
+.section-sub{
+    color:#64748b;
+    margin-bottom:18px;
+}
+
+.result-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.career-card{
+    background:white;
+    border-radius:24px;
+    padding:24px;
+    border:1px solid #e2e8f0;
+    box-shadow:0 12px 28px rgba(15,23,42,.06);
+    transition:.25s ease;
+}
+
+.career-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 20px 36px rgba(15,23,42,.10);
+}
+
+.career-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+    margin-bottom:14px;
+}
+
+.career-card h3{
+    margin:0;
+    font-size:24px;
+    color:#0f172a;
+}
+
+.career-tag{
+    background:#dbeafe;
+    color:#1d4ed8;
+    padding:7px 11px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.career-desc{
+    color:#64748b;
+    line-height:1.7;
+    font-size:14px;
+    margin-bottom:18px;
+}
+
+.meta-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:16px;
+}
+
+.meta-box{
+    background:#f8fbff;
+    border:1px solid #e2e8f0;
+    border-radius:16px;
+    padding:14px;
+}
+
+.meta-box span{
+    display:block;
+    font-size:12px;
+    color:#64748b;
+    font-weight:700;
+    margin-bottom:5px;
+}
+
+.meta-box strong{
+    color:#0f172a;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.roadmap{
+    background:linear-gradient(180deg,#f8fbff,#ffffff);
+    border:1px solid #e2e8f0;
+    border-radius:18px;
+    padding:18px;
+}
+
+.roadmap h4{
+    margin:0 0 10px 0;
+    color:#0f172a;
+    font-size:16px;
+}
+
+.roadmap ul{
+    padding-left:18px;
+    margin:0;
+    color:#475569;
+    line-height:1.8;
+    font-size:14px;
+}
+
+.cta-bar{
+    background:white;
+    border-radius:24px;
+    padding:24px;
+    border:1px solid #e2e8f0;
+    box-shadow:0 10px 25px rgba(15,23,42,.05);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:18px;
+    flex-wrap:wrap;
+}
+
+.cta-text h3{
+    margin:0 0 8px;
+    color:#0f172a;
+    font-size:24px;
+}
+
+.cta-text p{
+    margin:0;
+    color:#64748b;
+    line-height:1.7;
+}
+
+.btn-row{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.result-btn{
+    display:inline-block;
+    padding:13px 18px;
+    border-radius:14px;
+    font-weight:800;
+    font-size:14px;
+    text-decoration:none;
+    transition:.22s ease;
+}
+
+.result-btn.primary{
+    background:#2563eb;
+    color:white;
+    box-shadow:0 10px 22px rgba(37,99,235,.18);
+}
+
+.result-btn.primary:hover{
+    background:#1d4ed8;
+    transform:translateY(-1px);
+}
+
+.result-btn.secondary{
+    background:#e2e8f0;
+    color:#0f172a;
+}
+
+.result-btn.secondary:hover{
+    background:#cbd5e1;
+}
+
+@media (max-width:1000px){
+    .result-hero,
+    .result-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media (max-width:700px){
+    .result-hero{
+        padding:24px;
+    }
+
+    .result-title{
+        font-size:28px;
+    }
+
+    .meta-grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+
+<div class="result-wrap">
+
+    <section class="result-hero">
+        <div class="result-left">
+            <div class="result-badge">Career Result Generated</div>
+
+            <div class="result-title">Your Career Direction Looks Strong</div>
+
+            <div class="result-text">
+                Based on your assessment, the system has identified a top career category and recommended suitable options for your future growth.
+            </div>
+
+            <div class="category-pill">
+                🎯 Top Category: {{ top_category }}
+            </div>
+        </div>
+
+        <div class="result-right">
+            <div class="insight-card">
+                <h3>Quick Result Insights</h3>
+                <ul class="insight-list">
+                    <li>✔ Best-fit category identified from your assessment</li>
+                    <li>✔ Career recommendations matched to your profile</li>
+                    <li>✔ Skills and course direction included below</li>
+                    <li>✔ Use chatbot to explore deeper guidance</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title">Recommended Career Paths</div>
+        <div class="section-sub">Explore the roles best aligned with your interests and strengths.</div>
+
+        <div class="result-grid">
+            {% for career in careers %}
+            <div class="career-card">
+
+                <div class="career-top">
+                    <h3>{{ career.career_name }}</h3>
+                    <div class="career-tag">{{ career.category }}</div>
+                </div>
+
+                <div class="career-desc">
+                    {{ career.description }}
+                </div>
+
+                <div class="meta-grid">
+                    <div class="meta-box">
+                        <span>Required Skills</span>
+                        <strong>{{ career.required_skills }}</strong>
+                    </div>
+
+                    <div class="meta-box">
+                        <span>Suggested Courses</span>
+                        <strong>{{ career.courses }}</strong>
+                    </div>
+
+                    <div class="meta-box">
+                        <span>Salary Range</span>
+                        <strong>{{ career.salary_range }}</strong>
+                    </div>
+
+                    <div class="meta-box">
+                        <span>Future Scope</span>
+                        <strong>{{ career.future_scope }}</strong>
+                    </div>
+                </div>
+
+                <div class="roadmap">
+                    <h4>Suggested Roadmap</h4>
+                    <ul>
+                        <li>Build fundamental knowledge in this field</li>
+                        <li>Learn core tools and practical skills</li>
+                        <li>Create projects or internships for experience</li>
+                        <li>Prepare for job roles or advanced studies</li>
+                    </ul>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="cta-bar">
+        <div class="cta-text">
+            <h3>Take the Next Smart Step</h3>
+            <p>
+                Use the AI chatbot for deeper guidance, or take the assessment again to explore more possibilities.
+            </p>
+        </div>
+
+        <div class="btn-row">
+            <a href="{{ url_for('chatbot') }}" class="result-btn primary">Ask AI Chatbot</a>
+            <a href="{{ url_for('assessment') }}" class="result-btn secondary">Retake Assessment</a>
+        </div>
+    </section>
+
+</div>
+{% endblock %}
