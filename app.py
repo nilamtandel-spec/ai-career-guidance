@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 import sqlite3
+import os
 
 app = Flask(__name__, template_folder=".")
 app.secret_key = "careerpilot_secret_key"
@@ -128,22 +129,18 @@ def admin_login():
 # ===============================
 @app.route("/admin/dashboard")
 def admin_dashboard():
-
     if "admin_id" not in session:
         return redirect(url_for("admin_login"))
 
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Total Users
     cursor.execute("SELECT COUNT(*) AS total_users FROM users")
     total_users = cursor.fetchone()["total_users"]
 
-    # Total Results
     cursor.execute("SELECT COUNT(*) AS total_results FROM results")
     total_results = cursor.fetchone()["total_results"]
 
-    # Today Users
     cursor.execute("""
         SELECT COUNT(*) AS today_users
         FROM users
@@ -151,7 +148,6 @@ def admin_dashboard():
     """)
     today_users = cursor.fetchone()["today_users"]
 
-    # Today Results
     cursor.execute("""
         SELECT COUNT(*) AS today_results
         FROM results
@@ -159,7 +155,6 @@ def admin_dashboard():
     """)
     today_results = cursor.fetchone()["today_results"]
 
-    # Recent Users
     cursor.execute("""
         SELECT name,email,created_at
         FROM users
@@ -168,7 +163,6 @@ def admin_dashboard():
     """)
     users = cursor.fetchall()
 
-    # Top Categories
     cursor.execute("""
         SELECT top_category, COUNT(*) AS total
         FROM results
@@ -192,13 +186,27 @@ def admin_dashboard():
 
 
 # ===============================
-# CHATBOT
+# CHATBOT PAGE
+# ===============================
+@app.route("/chatbot")
+def chatbot_page():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    return render_template("chatbot.html")
+
+
+# ===============================
+# CHATBOT API
 # ===============================
 @app.route("/chat", methods=["POST"])
 def chat():
     try:
-        data = request.get_json()
-        user_message = data.get("message", "").lower()
+        data = request.get_json(silent=True) or {}
+        user_message = data.get("message", "").lower().strip()
+
+        if not user_message:
+            return jsonify({"reply": "Please type your question first."})
 
         if "admission" in user_message:
             reply = "Admission process is simple. First register online, select your course, submit required documents, pay the registration fee, and complete admission confirmation."
@@ -212,7 +220,7 @@ def chat():
         elif "placement" in user_message:
             reply = "Sandip University provides placement support, training sessions, industry interaction, resume preparation, and interview guidance."
 
-        elif "course" in user_message:
+        elif "course" in user_message or "program" in user_message:
             reply = "Courses are available in Engineering, Computer Science, Management, Law, Pharmacy, Design, Science and other streams."
 
         elif "hostel" in user_message:
@@ -221,6 +229,9 @@ def chat():
         elif "career" in user_message or "it" in user_message:
             reply = "For IT students, good career options include Software Developer, Web Developer, Data Analyst, Cyber Security Analyst, Cloud Engineer and AI/ML Developer."
 
+        elif "hello" in user_message or "hi" in user_message or "hii" in user_message:
+            reply = "Hello! Welcome to AI Student Enquiry Assistant. How can I help you today?"
+
         else:
             reply = "Please share your course interest, qualification and location so I can guide you better."
 
@@ -228,7 +239,8 @@ def chat():
 
     except Exception as e:
         print("Chat error:", e)
-        return jsonify({"reply": "Server error. Please check app.py chat route."})
+        return jsonify({"reply": "Something went wrong. Please try again."})
+
 
 # ===============================
 # LOGOUT
@@ -242,12 +254,9 @@ def logout():
 # ===============================
 # RUN APP
 # ===============================
-import os
-
-import os
-
 if __name__ == "__main__":
     app.run(
         host="0.0.0.0",
-        port=int(os.environ.get("PORT", 10000))
+        port=int(os.environ.get("PORT", 10000)),
+        debug=True
     )
