@@ -194,32 +194,41 @@ def admin_dashboard():
 # ===============================
 # CHATBOT
 # ===============================
-@app.route("/chatbot")
-def chatbot():
-    return render_template("chatbot.html")
+@app.route("/chat", methods=["POST"])
+def chat():
+    try:
+        data = request.get_json()
+        user_message = data.get("message", "").lower()
 
+        if "admission" in user_message:
+            reply = "Admission process is simple. First register online, select your course, submit required documents, pay the registration fee, and complete admission confirmation."
 
-# ===============================
-# HISTORY
-# ===============================
-@app.route("/history")
-def history():
-    if "user_id" not in session:
-        return redirect(url_for("login"))
+        elif "scholarship" in user_message:
+            reply = "Scholarship options are available based on eligibility, merit, and entrance exam performance. Students can also appear for SU-JEE for scholarship benefits."
 
-    conn = get_db_connection()
-    cursor = conn.cursor()
+        elif "fees" in user_message or "fee" in user_message:
+            reply = "Fees depend on the selected course. Please share the course name so I can guide you with proper fee details."
 
-    cursor.execute(
-        "SELECT * FROM results WHERE user_id=? ORDER BY id DESC",
-        (session["user_id"],)
-    )
+        elif "placement" in user_message:
+            reply = "Sandip University provides placement support, training sessions, industry interaction, resume preparation, and interview guidance."
 
-    results = cursor.fetchall()
-    conn.close()
+        elif "course" in user_message:
+            reply = "Courses are available in Engineering, Computer Science, Management, Law, Pharmacy, Design, Science and other streams."
 
-    return render_template("history.html", results=results)
+        elif "hostel" in user_message:
+            reply = "Hostel facility is available with required student amenities. Hostel fee and availability depend on campus and room type."
 
+        elif "career" in user_message or "it" in user_message:
+            reply = "For IT students, good career options include Software Developer, Web Developer, Data Analyst, Cyber Security Analyst, Cloud Engineer and AI/ML Developer."
+
+        else:
+            reply = "Please share your course interest, qualification and location so I can guide you better."
+
+        return jsonify({"reply": reply})
+
+    except Exception as e:
+        print("Chat error:", e)
+        return jsonify({"reply": "Server error. Please check app.py chat route."})
 
 # ===============================
 # LOGOUT
