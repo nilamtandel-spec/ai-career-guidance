@@ -286,6 +286,35 @@ def chat():
 # ===============================
 # LOGOUT
 # ===============================
+# ===============================
+# ASSESSMENT PAGE
+# ===============================
+@app.route("/assessment")
+def assessment():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    return render_template("assessment.html")
+    # ===============================
+# RESULT PAGE
+# ===============================
+@app.route("/result")
+def result():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    return render_template("result.html")
+
+
+# ===============================
+# HISTORY PAGE
+# ===============================
+@app.route("/history")
+def history():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    return render_template("history.html")
 @app.route("/logout")
 def logout():
     session.clear()
