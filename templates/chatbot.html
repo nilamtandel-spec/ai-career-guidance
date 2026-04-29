@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Student Enquiry Chatbot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 *{
@@ -14,33 +14,23 @@ font-family:Segoe UI,sans-serif;
 }
 
 body{
-background:linear-gradient(135deg,#08192e,#123c69,#0b132b);
+background:#07152b;
 height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
 overflow:hidden;
-color:#fff;
+color:white;
 }
 
 .chat-wrapper{
-width:95%;
-max-width:1100px;
-height:92vh;
+height:100vh;
+width:100%;
 display:grid;
-grid-template-columns:320px 1fr;
-background:rgba(255,255,255,.08);
-backdrop-filter:blur(16px);
-border-radius:25px;
-overflow:hidden;
-border:1px solid rgba(255,255,255,.15);
-box-shadow:0 25px 80px rgba(0,0,0,.4);
+grid-template-columns:300px 1fr;
+background:linear-gradient(135deg,#07152b,#123c69,#0b132b);
 }
 
 .sidebar{
 background:rgba(0,0,0,.35);
-padding:28px 24px;
-border-right:1px solid rgba(255,255,255,.08);
+padding:25px;
 overflow-y:auto;
 }
 
@@ -58,9 +48,8 @@ margin-bottom:25px;
 }
 
 .quick-title{
-font-size:14px;
-font-weight:700;
 color:#93c5fd;
+font-weight:700;
 margin-bottom:12px;
 }
 
@@ -69,39 +58,36 @@ width:100%;
 padding:13px 14px;
 margin-bottom:10px;
 border:none;
-border-radius:14px;
-background:rgba(255,255,255,.10);
-color:#fff;
-cursor:pointer;
+border-radius:12px;
+background:rgba(255,255,255,.12);
+color:white;
 text-align:left;
-transition:.3s;
+cursor:pointer;
 }
 
 .quick-btn:hover{
 background:#2563eb;
-transform:translateX(4px);
 }
 
 .note{
 margin-top:30px;
 padding:16px;
-border-radius:16px;
-background:rgba(56,189,248,.12);
-border:1px solid rgba(56,189,248,.25);
-font-size:14px;
+border-radius:14px;
+background:rgba(56,189,248,.15);
+border:1px solid rgba(56,189,248,.35);
 }
 
 .chat-main{
-display:flex;
-flex-direction:column;
-height:100%;
+height:100vh;
+display:grid;
+grid-template-rows:80px minmax(0,1fr) 80px;
 overflow:hidden;
 }
 
 .chat-header{
-padding:22px 28px;
+padding:20px 28px;
 background:rgba(255,255,255,.08);
-border-bottom:1px solid rgba(255,255,255,.08);
+border-bottom:1px solid rgba(255,255,255,.1);
 display:flex;
 justify-content:space-between;
 align-items:center;
@@ -117,25 +103,15 @@ color:#86efac;
 }
 
 .chat-box{
-flex:1;
-padding:26px;
+min-height:0;
 overflow-y:auto;
-scroll-behavior:smooth;
-}
-
-.chat-box::-webkit-scrollbar{
-width:6px;
-}
-
-.chat-box::-webkit-scrollbar-thumb{
-background:#3b82f6;
-border-radius:10px;
+padding:28px;
+padding-bottom:40px;
 }
 
 .message{
 display:flex;
 margin-bottom:18px;
-animation:fade .25s ease;
 }
 
 .message.user{
@@ -143,16 +119,16 @@ justify-content:flex-end;
 }
 
 .bubble{
-max-width:72%;
+max-width:70%;
 padding:14px 16px;
 border-radius:18px;
-line-height:1.6;
 font-size:15px;
-word-wrap:break-word;
+line-height:1.6;
+word-break:break-word;
 }
 
 .bot .bubble{
-background:rgba(255,255,255,.12);
+background:rgba(255,255,255,.14);
 border-top-left-radius:4px;
 }
 
@@ -163,17 +139,18 @@ border-top-right-radius:4px;
 
 .time{
 display:block;
-margin-top:6px;
 font-size:11px;
 color:#cbd5e1;
+margin-top:6px;
 }
 
 .chat-input{
-padding:18px 24px;
+height:80px;
+padding:15px 24px;
 display:flex;
 gap:12px;
-background:rgba(0,0,0,.28);
-border-top:1px solid rgba(255,255,255,.08);
+background:rgba(0,0,0,.45);
+border-top:1px solid rgba(255,255,255,.1);
 }
 
 .chat-input input{
@@ -182,48 +159,29 @@ padding:15px 16px;
 border:none;
 outline:none;
 border-radius:14px;
-background:rgba(255,255,255,.12);
-color:#fff;
+background:rgba(255,255,255,.14);
+color:white;
 font-size:15px;
 }
 
-.chat-input input::placeholder{
-color:#cbd5e1;
-}
-
 .chat-input button{
-padding:15px 24px;
+width:120px;
 border:none;
 border-radius:14px;
-font-weight:700;
-color:#fff;
-cursor:pointer;
 background:linear-gradient(135deg,#38bdf8,#2563eb);
-transition:.3s;
-min-width:110px;
-}
-
-.chat-input button:hover{
-transform:scale(1.05);
+color:white;
+font-weight:700;
+cursor:pointer;
 }
 
 .chat-input button:disabled{
-opacity:.8;
+opacity:.7;
 cursor:not-allowed;
-transform:none;
-}
-
-@keyframes fade{
-from{opacity:0;transform:translateY(8px);}
-to{opacity:1;transform:translateY(0);}
 }
 
 @media(max-width:850px){
 .chat-wrapper{
 grid-template-columns:1fr;
-width:100%;
-height:100vh;
-border-radius:0;
 }
 
 .sidebar{
@@ -242,7 +200,6 @@ max-width:85%;
 <div class="chat-wrapper">
 
 <div class="sidebar">
-
 <div class="logo">🎓 Sandip AI</div>
 
 <div class="subtitle">
@@ -261,7 +218,6 @@ Smart student enquiry assistant for admission, course, fees, scholarship, hostel
 <strong>Project Module:</strong><br>
 Premium AI Chatbot
 </div>
-
 </div>
 
 <div class="chat-main">
@@ -275,7 +231,6 @@ Premium AI Chatbot
 </div>
 
 <div class="chat-box" id="chatBox">
-
 <div class="message bot">
 <div class="bubble">
 Hello 👋 Welcome to Sandip University AI Student Enquiry Assistant.<br>
@@ -283,7 +238,6 @@ Ask me about admission, course, fees, scholarship, hostel or placement.
 <span class="time">Now</span>
 </div>
 </div>
-
 </div>
 
 <div class="chat-input">
@@ -292,7 +246,6 @@ Ask me about admission, course, fees, scholarship, hostel or placement.
 </div>
 
 </div>
-
 </div>
 
 <script>
@@ -302,88 +255,81 @@ sendMessage();
 }
 }
 
-function quickQuestion(q){
-document.getElementById("userInput").value=q;
+function quickQuestion(text){
+document.getElementById("userInput").value=text;
 sendMessage();
 }
 
 function getTime(){
-const now=new Date();
-return now.toLocaleTimeString([],{
+return new Date().toLocaleTimeString([],{
 hour:"2-digit",
 minute:"2-digit"
 });
 }
 
-function scrollBottom(){
+function scrollToBottom(){
 const chatBox=document.getElementById("chatBox");
-
-setTimeout(()=>{
 chatBox.scrollTop=chatBox.scrollHeight;
-},50);
 }
 
 function addMessage(text,type){
 const chatBox=document.getElementById("chatBox");
 
-const div=document.createElement("div");
-div.className="message "+type;
+const msg=document.createElement("div");
+msg.className="message "+type;
 
-div.innerHTML=`
+msg.innerHTML=`
 <div class="bubble">
 ${text}
 <span class="time">${getTime()}</span>
 </div>
 `;
 
-chatBox.appendChild(div);
+chatBox.appendChild(msg);
 
-scrollBottom();
+setTimeout(scrollToBottom,100);
 }
 
 function sendMessage(){
 const input=document.getElementById("userInput");
-const button=document.getElementById("sendBtn");
+const btn=document.getElementById("sendBtn");
+const text=input.value.trim();
 
-const msg=input.value.trim();
-
-if(msg===""){
+if(text===""){
 return;
 }
 
-addMessage(msg,"user");
-
+addMessage(text,"user");
 input.value="";
-button.innerText="Typing...";
-button.disabled=true;
+
+btn.innerText="Typing...";
+btn.disabled=true;
 
 fetch("/chat",{
 method:"POST",
 headers:{
 "Content-Type":"application/json"
 },
-body:JSON.stringify({message:msg})
+body:JSON.stringify({message:text})
 })
 .then(res=>res.json())
 .then(data=>{
 setTimeout(()=>{
 addMessage(data.reply || "Sorry, I could not generate an answer right now.","bot");
-button.innerText="Send";
-button.disabled=false;
+btn.innerText="Send";
+btn.disabled=false;
 input.focus();
 },700);
 })
 .catch(()=>{
 addMessage("Sorry, I could not generate an answer right now.","bot");
-button.innerText="Send";
-button.disabled=false;
+btn.innerText="Send";
+btn.disabled=false;
 input.focus();
 });
 }
 
-window.onload=function(){
-scrollBottom();
-}
+window.onload=scrollToBottom;
 </script>
 
 </body>
