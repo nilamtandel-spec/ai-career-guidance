@@ -168,15 +168,6 @@ font-size:11px;
 color:#cbd5e1;
 }
 
-.typing-fixed{
-display:none;
-padding:10px 24px;
-background:rgba(0,0,0,.22);
-color:#cbd5e1;
-font-size:14px;
-border-top:1px solid rgba(255,255,255,.08);
-}
-
 .chat-input{
 padding:18px 24px;
 display:flex;
@@ -209,10 +200,17 @@ color:#fff;
 cursor:pointer;
 background:linear-gradient(135deg,#38bdf8,#2563eb);
 transition:.3s;
+min-width:110px;
 }
 
 .chat-input button:hover{
 transform:scale(1.05);
+}
+
+.chat-input button:disabled{
+opacity:.8;
+cursor:not-allowed;
+transform:none;
 }
 
 @keyframes fade{
@@ -288,13 +286,9 @@ Ask me about admission, course, fees, scholarship, hostel or placement.
 
 </div>
 
-<div class="typing-fixed" id="typingBox">
-AI Assistant is typing...
-</div>
-
 <div class="chat-input">
 <input type="text" id="userInput" placeholder="Type your question here..." onkeydown="handleKey(event)">
-<button onclick="sendMessage()">Send</button>
+<button id="sendBtn" onclick="sendMessage()">Send</button>
 </div>
 
 </div>
@@ -321,15 +315,15 @@ minute:"2-digit"
 });
 }
 
-function forceScrollBottom(){
+function scrollBottom(){
 const chatBox=document.getElementById("chatBox");
 
 setTimeout(()=>{
 chatBox.scrollTop=chatBox.scrollHeight;
-},100);
+},50);
 }
 
-function addMessage(text,type,time=getTime()){
+function addMessage(text,type){
 const chatBox=document.getElementById("chatBox");
 
 const div=document.createElement("div");
@@ -338,25 +332,19 @@ div.className="message "+type;
 div.innerHTML=`
 <div class="bubble">
 ${text}
-<span class="time">${time}</span>
+<span class="time">${getTime()}</span>
 </div>
 `;
 
 chatBox.appendChild(div);
 
-forceScrollBottom();
-}
-
-function showTyping(){
-document.getElementById("typingBox").style.display="block";
-}
-
-function hideTyping(){
-document.getElementById("typingBox").style.display="none";
+scrollBottom();
 }
 
 function sendMessage(){
 const input=document.getElementById("userInput");
+const button=document.getElementById("sendBtn");
+
 const msg=input.value.trim();
 
 if(msg===""){
@@ -364,9 +352,10 @@ return;
 }
 
 addMessage(msg,"user");
-input.value="";
 
-showTyping();
+input.value="";
+button.innerText="Typing...";
+button.disabled=true;
 
 fetch("/chat",{
 method:"POST",
@@ -378,18 +367,22 @@ body:JSON.stringify({message:msg})
 .then(res=>res.json())
 .then(data=>{
 setTimeout(()=>{
-hideTyping();
 addMessage(data.reply || "Sorry, I could not generate an answer right now.","bot");
+button.innerText="Send";
+button.disabled=false;
+input.focus();
 },700);
 })
 .catch(()=>{
-hideTyping();
 addMessage("Sorry, I could not generate an answer right now.","bot");
+button.innerText="Send";
+button.disabled=false;
+input.focus();
 });
 }
 
 window.onload=function(){
-forceScrollBottom();
+scrollBottom();
 }
 </script>
 
