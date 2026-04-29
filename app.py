@@ -456,12 +456,24 @@ def result():
         ORDER BY id DESC
         LIMIT 1
     """, (session["user_id"],))
+    latest_result = cursor.fetchone()
 
-    result_data = cursor.fetchone()
+    cursor.execute("""
+        SELECT top_category, score, created_at
+        FROM results
+        WHERE user_id=?
+        ORDER BY id DESC
+        LIMIT 5
+    """, (session["user_id"],))
+    history = cursor.fetchall()
+
     conn.close()
 
-    return render_template("result.html", result=result_data)
-
+    return render_template(
+        "result.html",
+        result=latest_result,
+        history=history
+    )
 
 @app.route("/history")
 def history():
