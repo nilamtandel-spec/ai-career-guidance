@@ -2,21 +2,84 @@
 {% block title %}Assessment{% endblock %}
 
 {% block content %}
+
 <div class="assessment-card">
-    <h2>Career Assessment Test</h2>
-    <form method="POST">
-        {% for question in questions %}
-            <div class="question-block">
-                <p><strong>Q{{ loop.index }}. {{ question.question_text }}</strong></p>
+<h2>Career Assessment Test</h2>
 
-                <label><input type="radio" name="question_{{ question.id }}" value="A" required> {{ question.option_a }}</label><br>
-                <label><input type="radio" name="question_{{ question.id }}" value="B" required> {{ question.option_b }}</label><br>
-                <label><input type="radio" name="question_{{ question.id }}" value="C" required> {{ question.option_c }}</label><br>
-                <label><input type="radio" name="question_{{ question.id }}" value="D" required> {{ question.option_d }}</label>
-            </div>
-        {% endfor %}
+<form method="POST">
 
-        <button type="submit" class="btn">Submit Assessment</button>
-    </form>
+{% set questions = [
+("Which activity do you enjoy the most?", "Solving computer problems", "Drawing / Designing", "Leading a team", "Helping people"),
+("Which subject do you like most?", "Computer / Mathematics", "Art / Media", "Commerce / Economics", "Psychology / Communication"),
+("How do you usually solve problems?", "Using logic and analysis", "Using creativity", "Planning strategy", "Talking with others"),
+("Which work environment suits you best?", "Tech office / Lab", "Creative studio", "Corporate office", "Public interaction place"),
+("Which tool would you prefer to use?", "Laptop / Software", "Camera / Design tools", "Reports / Business tools", "Phone / Communication tools"),
+("What type of task excites you most?", "Building apps / websites", "Creating videos / graphics", "Running business projects", "Guiding students / customers"),
+("What is your strongest skill?", "Technical thinking", "Creative imagination", "Leadership ability", "Communication skill"),
+("Which career sounds best to you?", "Software Engineer", "Graphic Designer", "Business Manager", "Counsellor / HR"),
+("How do you prefer to work?", "With systems and data", "With ideas and visuals", "With targets and plans", "With people and support"),
+("What motivates you more?", "Innovation", "Creativity", "Success and growth", "Helping others succeed"),
+("Which college stream interests you most?", "IT / Engineering", "Design / Animation", "Management / Commerce", "Humanities / Communication"),
+("How do friends describe you?", "Smart and logical", "Creative and stylish", "Confident leader", "Friendly and supportive"),
+("Which future role do you imagine?", "Tech Expert", "Creative Artist", "CEO / Entrepreneur", "Mentor / Advisor"),
+("Which challenge would you enjoy?", "Fixing software issue", "Designing a brand logo", "Managing company growth", "Solving customer problem"),
+("What matters most in your career?", "Innovation and technology", "Expression and creativity", "Money and leadership", "Meaningful human impact")
+] %}
+
+{% for q in questions %}
+<div class="question-block">
+<p><strong>Q{{ loop.index }}. {{ q[0] }}</strong></p>
+
+<label><input type="radio" name="question_{{ loop.index }}" value="A" required> {{ q[1] }}</label><br>
+<label><input type="radio" name="question_{{ loop.index }}" value="B" required> {{ q[2] }}</label><br>
+<label><input type="radio" name="question_{{ loop.index }}" value="C" required> {{ q[3] }}</label><br>
+<label><input type="radio" name="question_{{ loop.index }}" value="D" required> {{ q[4] }}</label>
 </div>
+{% endfor %}
+
+<button type="submit" class="btn">Submit Assessment</button>
+
+</form>
+</div>
+
+<style>
+.assessment-card{
+max-width:900px;
+margin:40px auto;
+background:white;
+padding:30px;
+border-radius:18px;
+box-shadow:0 20px 50px rgba(0,0,0,0.12);
+}
+
+.question-block{
+padding:18px;
+margin-bottom:18px;
+border-radius:14px;
+background:#f8fafc;
+border:1px solid #e5e7eb;
+}
+
+.question-block p{
+margin-bottom:12px;
+font-size:17px;
+}
+
+.question-block label{
+display:block;
+padding:8px 0;
+font-size:15px;
+}
+
+.btn{
+padding:14px 28px;
+border:none;
+border-radius:12px;
+background:#2563eb;
+color:white;
+font-weight:700;
+cursor:pointer;
+}
+</style>
+
 {% endblock %}
