@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AI Student Enquiry Chatbot</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Student Enquiry Chatbot</title>
 
 <style>
 *{
@@ -13,17 +13,14 @@ box-sizing:border-box;
 font-family:Segoe UI,sans-serif;
 }
 
-html,body{
-height:100%;
-overflow:hidden;
-}
-
 body{
 background:linear-gradient(135deg,#08192e,#123c69,#0b132b);
+height:100vh;
 display:flex;
-align-items:center;
 justify-content:center;
-color:white;
+align-items:center;
+overflow:hidden;
+color:#fff;
 }
 
 .chat-wrapper{
@@ -33,16 +30,17 @@ height:92vh;
 display:grid;
 grid-template-columns:320px 1fr;
 background:rgba(255,255,255,.08);
+backdrop-filter:blur(16px);
 border-radius:25px;
 overflow:hidden;
-box-shadow:0 25px 80px rgba(0,0,0,.4);
 border:1px solid rgba(255,255,255,.15);
+box-shadow:0 25px 80px rgba(0,0,0,.4);
 }
 
 .sidebar{
 background:rgba(0,0,0,.35);
 padding:28px 24px;
-border-right:1px solid rgba(255,255,255,.1);
+border-right:1px solid rgba(255,255,255,.08);
 overflow-y:auto;
 }
 
@@ -72,14 +70,16 @@ padding:13px 14px;
 margin-bottom:10px;
 border:none;
 border-radius:14px;
-background:rgba(255,255,255,.1);
-color:white;
-text-align:left;
+background:rgba(255,255,255,.10);
+color:#fff;
 cursor:pointer;
+text-align:left;
+transition:.3s;
 }
 
 .quick-btn:hover{
 background:#2563eb;
+transform:translateX(4px);
 }
 
 .note{
@@ -92,16 +92,16 @@ font-size:14px;
 }
 
 .chat-main{
-height:92vh;
-display:grid;
-grid-template-rows:auto 1fr auto;
+display:flex;
+flex-direction:column;
+height:100%;
 overflow:hidden;
 }
 
 .chat-header{
 padding:22px 28px;
 background:rgba(255,255,255,.08);
-border-bottom:1px solid rgba(255,255,255,.1);
+border-bottom:1px solid rgba(255,255,255,.08);
 display:flex;
 justify-content:space-between;
 align-items:center;
@@ -117,15 +117,25 @@ color:#86efac;
 }
 
 .chat-box{
-height:100%;
-overflow-y:auto;
+flex:1;
 padding:26px;
+overflow-y:auto;
 scroll-behavior:smooth;
+}
+
+.chat-box::-webkit-scrollbar{
+width:6px;
+}
+
+.chat-box::-webkit-scrollbar-thumb{
+background:#3b82f6;
+border-radius:10px;
 }
 
 .message{
 display:flex;
 margin-bottom:18px;
+animation:fade .25s ease;
 }
 
 .message.user{
@@ -136,13 +146,13 @@ justify-content:flex-end;
 max-width:72%;
 padding:14px 16px;
 border-radius:18px;
-font-size:15px;
 line-height:1.6;
-word-break:break-word;
+font-size:15px;
+word-wrap:break-word;
 }
 
 .bot .bubble{
-background:rgba(255,255,255,.13);
+background:rgba(255,255,255,.12);
 border-top-left-radius:4px;
 }
 
@@ -153,17 +163,26 @@ border-top-right-radius:4px;
 
 .time{
 display:block;
+margin-top:6px;
 font-size:11px;
 color:#cbd5e1;
-margin-top:6px;
+}
+
+.typing-fixed{
+display:none;
+padding:10px 24px;
+background:rgba(0,0,0,.22);
+color:#cbd5e1;
+font-size:14px;
+border-top:1px solid rgba(255,255,255,.08);
 }
 
 .chat-input{
 padding:18px 24px;
 display:flex;
 gap:12px;
-background:rgba(0,0,0,.32);
-border-top:1px solid rgba(255,255,255,.1);
+background:rgba(0,0,0,.28);
+border-top:1px solid rgba(255,255,255,.08);
 }
 
 .chat-input input{
@@ -173,22 +192,32 @@ border:none;
 outline:none;
 border-radius:14px;
 background:rgba(255,255,255,.12);
-color:white;
+color:#fff;
 font-size:15px;
+}
+
+.chat-input input::placeholder{
+color:#cbd5e1;
 }
 
 .chat-input button{
 padding:15px 24px;
 border:none;
 border-radius:14px;
-background:linear-gradient(135deg,#38bdf8,#2563eb);
-color:white;
 font-weight:700;
+color:#fff;
 cursor:pointer;
+background:linear-gradient(135deg,#38bdf8,#2563eb);
+transition:.3s;
 }
 
-#bottomAnchor{
-height:1px;
+.chat-input button:hover{
+transform:scale(1.05);
+}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(8px);}
+to{opacity:1;transform:translateY(0);}
 }
 
 @media(max-width:850px){
@@ -197,10 +226,6 @@ grid-template-columns:1fr;
 width:100%;
 height:100vh;
 border-radius:0;
-}
-
-.chat-main{
-height:100vh;
 }
 
 .sidebar{
@@ -219,6 +244,7 @@ max-width:85%;
 <div class="chat-wrapper">
 
 <div class="sidebar">
+
 <div class="logo">🎓 Sandip AI</div>
 
 <div class="subtitle">
@@ -237,6 +263,7 @@ Smart student enquiry assistant for admission, course, fees, scholarship, hostel
 <strong>Project Module:</strong><br>
 Premium AI Chatbot
 </div>
+
 </div>
 
 <div class="chat-main">
@@ -250,6 +277,7 @@ Premium AI Chatbot
 </div>
 
 <div class="chat-box" id="chatBox">
+
 <div class="message bot">
 <div class="bubble">
 Hello 👋 Welcome to Sandip University AI Student Enquiry Assistant.<br>
@@ -258,7 +286,10 @@ Ask me about admission, course, fees, scholarship, hostel or placement.
 </div>
 </div>
 
-<div id="bottomAnchor"></div>
+</div>
+
+<div class="typing-fixed" id="typingBox">
+AI Assistant is typing...
 </div>
 
 <div class="chat-input">
@@ -267,123 +298,99 @@ Ask me about admission, course, fees, scholarship, hostel or placement.
 </div>
 
 </div>
+
 </div>
 
 <script>
 function handleKey(event){
-    if(event.key === "Enter"){
-        sendMessage();
-    }
+if(event.key==="Enter"){
+sendMessage();
+}
 }
 
 function quickQuestion(q){
-    document.getElementById("userInput").value = q;
-    sendMessage();
+document.getElementById("userInput").value=q;
+sendMessage();
 }
 
 function getTime(){
-    return new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit"
-    });
+const now=new Date();
+return now.toLocaleTimeString([],{
+hour:"2-digit",
+minute:"2-digit"
+});
 }
 
 function forceScrollBottom(){
-    const anchor = document.getElementById("bottomAnchor");
+const chatBox=document.getElementById("chatBox");
 
-    setTimeout(() => {
-        anchor.scrollIntoView({
-            behavior: "smooth",
-            block: "end"
-        });
-    }, 50);
-
-    setTimeout(() => {
-        anchor.scrollIntoView({
-            behavior: "auto",
-            block: "end"
-        });
-    }, 250);
+setTimeout(()=>{
+chatBox.scrollTop=chatBox.scrollHeight;
+},100);
 }
 
-function addMessage(text,type){
-    const anchor = document.getElementById("bottomAnchor");
+function addMessage(text,type,time=getTime()){
+const chatBox=document.getElementById("chatBox");
 
-    const div = document.createElement("div");
-    div.className = "message " + type;
+const div=document.createElement("div");
+div.className="message "+type;
 
-    div.innerHTML = `
-        <div class="bubble">
-            ${text}
-            <span class="time">${getTime()}</span>
-        </div>
-    `;
+div.innerHTML=`
+<div class="bubble">
+${text}
+<span class="time">${time}</span>
+</div>
+`;
 
-    anchor.parentNode.insertBefore(div, anchor);
-    forceScrollBottom();
+chatBox.appendChild(div);
+
+forceScrollBottom();
 }
 
 function showTyping(){
-    hideTyping();
-
-    const anchor = document.getElementById("bottomAnchor");
-
-    const div = document.createElement("div");
-    div.className = "message bot";
-    div.id = "typingBox";
-
-    div.innerHTML = `
-        <div class="bubble">
-            AI Assistant is typing...
-            <span class="time">${getTime()}</span>
-        </div>
-    `;
-
-    anchor.parentNode.insertBefore(div, anchor);
-    forceScrollBottom();
+document.getElementById("typingBox").style.display="block";
 }
 
 function hideTyping(){
-    const typing = document.getElementById("typingBox");
-    if(typing){
-        typing.remove();
-    }
+document.getElementById("typingBox").style.display="none";
 }
 
 function sendMessage(){
-    const input = document.getElementById("userInput");
-    const msg = input.value.trim();
+const input=document.getElementById("userInput");
+const msg=input.value.trim();
 
-    if(msg === ""){
-        return;
-    }
-
-    addMessage(msg,"user");
-    input.value = "";
-
-    showTyping();
-
-    fetch("/chat",{
-        method:"POST",
-        headers:{
-            "Content-Type":"application/json"
-        },
-        body:JSON.stringify({message:msg})
-    })
-    .then(res => res.json())
-    .then(data => {
-        setTimeout(() => {
-            hideTyping();
-            addMessage(data.reply || "Sorry, I could not generate an answer right now.","bot");
-        },700);
-    })
-    .catch(() => {
-        hideTyping();
-        addMessage("Sorry, I could not generate an answer right now.","bot");
-    });
+if(msg===""){
+return;
 }
 
-window.onload = forceScrollBottom;
+addMessage(msg,"user");
+input.value="";
+
+showTyping();
+
+fetch("/chat",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({message:msg})
+})
+.then(res=>res.json())
+.then(data=>{
+setTimeout(()=>{
+hideTyping();
+addMessage(data.reply || "Sorry, I could not generate an answer right now.","bot");
+},700);
+})
+.catch(()=>{
+hideTyping();
+addMessage("Sorry, I could not generate an answer right now.","bot");
+});
+}
+
+window.onload=function(){
+forceScrollBottom();
+}
 </script>
 
 </body>
