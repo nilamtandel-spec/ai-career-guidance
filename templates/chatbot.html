@@ -1,335 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>AI Student Enquiry Chatbot</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Segoe UI,sans-serif;
-}
-
-body{
-background:#07152b;
-height:100vh;
-overflow:hidden;
-color:white;
-}
-
-.chat-wrapper{
-height:100vh;
-width:100%;
-display:grid;
-grid-template-columns:300px 1fr;
-background:linear-gradient(135deg,#07152b,#123c69,#0b132b);
-}
-
-.sidebar{
-background:rgba(0,0,0,.35);
-padding:25px;
-overflow-y:auto;
-}
-
-.logo{
-font-size:24px;
-font-weight:800;
-margin-bottom:10px;
-}
-
-.subtitle{
-font-size:14px;
-color:#cbd5e1;
-line-height:1.6;
-margin-bottom:25px;
-}
-
-.quick-title{
-color:#93c5fd;
-font-weight:700;
-margin-bottom:12px;
-}
-
-.quick-btn{
-width:100%;
-padding:13px 14px;
-margin-bottom:10px;
-border:none;
-border-radius:12px;
-background:rgba(255,255,255,.12);
-color:white;
-text-align:left;
-cursor:pointer;
-}
-
-.quick-btn:hover{
-background:#2563eb;
-}
-
-.note{
-margin-top:30px;
-padding:16px;
-border-radius:14px;
-background:rgba(56,189,248,.15);
-border:1px solid rgba(56,189,248,.35);
-}
-
-.chat-main{
-height:100vh;
-display:grid;
-grid-template-rows:80px minmax(0,1fr) 80px;
-overflow:hidden;
-}
-
-.chat-header{
-padding:20px 28px;
-background:rgba(255,255,255,.08);
-border-bottom:1px solid rgba(255,255,255,.1);
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.chat-header h2{
-font-size:22px;
-}
-
-.status{
-font-size:13px;
-color:#86efac;
-}
-
-.chat-box{
-min-height:0;
-overflow-y:auto;
-padding:28px;
-padding-bottom:40px;
-}
-
-.message{
-display:flex;
-margin-bottom:18px;
-}
-
-.message.user{
-justify-content:flex-end;
-}
-
-.bubble{
-max-width:70%;
-padding:14px 16px;
-border-radius:18px;
-font-size:15px;
-line-height:1.6;
-word-break:break-word;
-}
-
-.bot .bubble{
-background:rgba(255,255,255,.14);
-border-top-left-radius:4px;
-}
-
-.user .bubble{
-background:linear-gradient(135deg,#2563eb,#1d4ed8);
-border-top-right-radius:4px;
-}
-
-.time{
-display:block;
-font-size:11px;
-color:#cbd5e1;
-margin-top:6px;
-}
-
-.chat-input{
-height:80px;
-padding:15px 24px;
-display:flex;
-gap:12px;
-background:rgba(0,0,0,.45);
-border-top:1px solid rgba(255,255,255,.1);
-}
-
-.chat-input input{
-flex:1;
-padding:15px 16px;
-border:none;
-outline:none;
-border-radius:14px;
-background:rgba(255,255,255,.14);
-color:white;
-font-size:15px;
-}
-
-.chat-input button{
-width:120px;
-border:none;
-border-radius:14px;
-background:linear-gradient(135deg,#38bdf8,#2563eb);
-color:white;
-font-weight:700;
-cursor:pointer;
-}
-
-.chat-input button:disabled{
-opacity:.7;
-cursor:not-allowed;
-}
-
-@media(max-width:850px){
-.chat-wrapper{
-grid-template-columns:1fr;
-}
-
-.sidebar{
-display:none;
-}
-
-.bubble{
-max-width:85%;
-}
-}
-</style>
+<title>Test Chatbot</title>
 </head>
 
-<body>
+<body style="margin:0;font-family:Arial;background:#07152b;color:white;">
 
-<div class="chat-wrapper">
+<h1 style="color:red;position:fixed;top:0;left:0;z-index:9999;background:white;padding:10px;">
+NEW CHATBOT FILE LOADED
+</h1>
 
-<div class="sidebar">
-<div class="logo">🎓 Sandip AI</div>
+<div style="height:100vh;display:flex;flex-direction:column;padding-top:70px;">
 
-<div class="subtitle">
-Smart student enquiry assistant for admission, course, fees, scholarship, hostel and placement guidance.
-</div>
+    <div id="chatBox" style="flex:1;overflow-y:auto;padding:20px;background:#123c69;">
+        <div style="background:#334155;padding:12px;border-radius:10px;margin-bottom:10px;">
+            Hello 👋 Ask me anything.
+        </div>
+    </div>
 
-<div class="quick-title">Quick Questions</div>
+    <div style="display:flex;padding:15px;background:#020617;">
+        <input id="userInput" style="flex:1;padding:15px;border-radius:8px;border:none;" placeholder="Type message...">
+        <button onclick="sendMessage()" style="padding:15px 25px;margin-left:10px;">Send</button>
+    </div>
 
-<button class="quick-btn" onclick="quickQuestion('Tell me about admission process')">Admission Process</button>
-<button class="quick-btn" onclick="quickQuestion('Tell me about scholarship')">Scholarship Details</button>
-<button class="quick-btn" onclick="quickQuestion('Which courses are available?')">Available Courses</button>
-<button class="quick-btn" onclick="quickQuestion('Tell me about hostel facility')">Hostel Facility</button>
-<button class="quick-btn" onclick="quickQuestion('Tell me about placement')">Placement Support</button>
-
-<div class="note">
-<strong>Project Module:</strong><br>
-Premium AI Chatbot
-</div>
-</div>
-
-<div class="chat-main">
-
-<div class="chat-header">
-<div>
-<h2>AI Student Enquiry Chatbot</h2>
-<div class="status">● Online Assistant</div>
-</div>
-<div>Premium Final Year Project</div>
-</div>
-
-<div class="chat-box" id="chatBox">
-<div class="message bot">
-<div class="bubble">
-Hello 👋 Welcome to Sandip University AI Student Enquiry Assistant.<br>
-Ask me about admission, course, fees, scholarship, hostel or placement.
-<span class="time">Now</span>
-</div>
-</div>
-</div>
-
-<div class="chat-input">
-<input type="text" id="userInput" placeholder="Type your question here..." onkeydown="handleKey(event)">
-<button id="sendBtn" onclick="sendMessage()">Send</button>
-</div>
-
-</div>
 </div>
 
 <script>
-function handleKey(event){
-if(event.key==="Enter"){
-sendMessage();
-}
-}
-
-function quickQuestion(text){
-document.getElementById("userInput").value=text;
-sendMessage();
+function scrollBottom(){
+    var box = document.getElementById("chatBox");
+    box.scrollTop = box.scrollHeight;
 }
 
-function getTime(){
-return new Date().toLocaleTimeString([],{
-hour:"2-digit",
-minute:"2-digit"
-});
-}
+function addMessage(text, align){
+    var box = document.getElementById("chatBox");
+    var div = document.createElement("div");
 
-function scrollToBottom(){
-const chatBox=document.getElementById("chatBox");
-chatBox.scrollTop=chatBox.scrollHeight;
-}
+    div.style.padding = "12px";
+    div.style.borderRadius = "10px";
+    div.style.marginBottom = "10px";
+    div.style.maxWidth = "70%";
+    div.style.background = align === "right" ? "#2563eb" : "#334155";
+    div.style.marginLeft = align === "right" ? "auto" : "0";
+    div.innerText = text;
 
-function addMessage(text,type){
-const chatBox=document.getElementById("chatBox");
-
-const msg=document.createElement("div");
-msg.className="message "+type;
-
-msg.innerHTML=`
-<div class="bubble">
-${text}
-<span class="time">${getTime()}</span>
-</div>
-`;
-
-chatBox.appendChild(msg);
-
-setTimeout(scrollToBottom,100);
+    box.appendChild(div);
+    setTimeout(scrollBottom, 50);
 }
 
 function sendMessage(){
-const input=document.getElementById("userInput");
-const btn=document.getElementById("sendBtn");
-const text=input.value.trim();
+    var input = document.getElementById("userInput");
+    var msg = input.value.trim();
 
-if(text===""){
-return;
+    if(!msg) return;
+
+    addMessage(msg, "right");
+    input.value = "";
+
+    fetch("/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message: msg})
+    })
+    .then(res => res.json())
+    .then(data => {
+        addMessage(data.reply || "No reply", "left");
+    })
+    .catch(() => {
+        addMessage("Error connecting to chatbot.", "left");
+    });
 }
 
-addMessage(text,"user");
-input.value="";
-
-btn.innerText="Typing...";
-btn.disabled=true;
-
-fetch("/chat",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({message:text})
-})
-.then(res=>res.json())
-.then(data=>{
-setTimeout(()=>{
-addMessage(data.reply || "Sorry, I could not generate an answer right now.","bot");
-btn.innerText="Send";
-btn.disabled=false;
-input.focus();
-},700);
-})
-.catch(()=>{
-addMessage("Sorry, I could not generate an answer right now.","bot");
-btn.innerText="Send";
-btn.disabled=false;
-input.focus();
+document.getElementById("userInput").addEventListener("keydown", function(e){
+    if(e.key === "Enter"){
+        sendMessage();
+    }
 });
-}
-
-window.onload=scrollToBottom;
 </script>
 
 </body>
