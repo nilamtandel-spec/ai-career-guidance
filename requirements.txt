@@ -8,3 +8,4 @@ python-dotenv==1.0.1
 waitress==3.0.0
 openai
 google-generativeai
+wikipedia
