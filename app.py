@@ -6,18 +6,12 @@ app = Flask(__name__, template_folder=".")
 app.secret_key = "careerpilot_secret_key"
 
 
-# =====================================
-# DATABASE CONNECTION
-# =====================================
 def get_db_connection():
     conn = sqlite3.connect("database.db")
     conn.row_factory = sqlite3.Row
     return conn
 
 
-# =====================================
-# CREATE TABLES
-# =====================================
 def init_db():
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -59,17 +53,11 @@ def init_db():
 init_db()
 
 
-# =====================================
-# HOME
-# =====================================
 @app.route("/")
 def index():
     return render_template("index.html")
 
 
-# =====================================
-# REGISTER
-# =====================================
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -80,12 +68,10 @@ def register():
         try:
             conn = get_db_connection()
             cursor = conn.cursor()
-
             cursor.execute(
                 "INSERT INTO users(name,email,password) VALUES(?,?,?)",
                 (name, email, password)
             )
-
             conn.commit()
             conn.close()
 
@@ -98,9 +84,6 @@ def register():
     return render_template("register.html")
 
 
-# =====================================
-# LOGIN
-# =====================================
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -109,7 +92,6 @@ def login():
 
         conn = get_db_connection()
         cursor = conn.cursor()
-
         cursor.execute(
             "SELECT * FROM users WHERE email=? AND password=?",
             (email, password)
@@ -128,9 +110,6 @@ def login():
     return render_template("login.html")
 
 
-# =====================================
-# USER DASHBOARD
-# =====================================
 @app.route("/dashboard")
 def dashboard():
     if "user_id" not in session:
@@ -143,20 +122,24 @@ def dashboard():
         "SELECT COUNT(*) as total_results FROM results WHERE user_id=?",
         (session["user_id"],)
     )
-
     total_results = cursor.fetchone()["total_results"]
+
+    cursor.execute(
+        "SELECT COUNT(*) as total_chats FROM chat_history WHERE user_id=?",
+        (session["user_id"],)
+    )
+    total_chats = cursor.fetchone()["total_chats"]
+
     conn.close()
 
     return render_template(
         "dashboard.html",
         user_name=session["user_name"],
-        total_results=total_results
+        total_results=total_results,
+        total_chats=total_chats
     )
 
 
-# =====================================
-# ADMIN LOGIN
-# =====================================
 @app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
@@ -172,9 +155,6 @@ def admin_login():
     return render_template("admin_login.html")
 
 
-# =====================================
-# ADMIN DASHBOARD
-# =====================================
 @app.route("/admin/dashboard")
 def admin_dashboard():
     if "admin_id" not in session:
@@ -188,6 +168,9 @@ def admin_dashboard():
 
     cursor.execute("SELECT COUNT(*) AS total_results FROM results")
     total_results = cursor.fetchone()["total_results"]
+
+    cursor.execute("SELECT COUNT(*) AS total_chats FROM chat_history")
+    total_chats = cursor.fetchone()["total_chats"]
 
     cursor.execute("""
         SELECT name,email,created_at
@@ -203,13 +186,11 @@ def admin_dashboard():
         "admin_dashboard.html",
         total_users=total_users,
         total_results=total_results,
+        total_chats=total_chats,
         users=users
     )
 
 
-# =====================================
-# CHATBOT PAGE
-# =====================================
 @app.route("/chatbot")
 def chatbot():
     if "user_id" not in session:
@@ -218,9 +199,6 @@ def chatbot():
     return render_template("chatbot.html")
 
 
-# =====================================
-# CHATBOT API
-# =====================================
 @app.route("/chat", methods=["POST"])
 def chat():
     try:
@@ -237,33 +215,46 @@ def chat():
             reply = "Fees depend on selected course. Please tell course name."
 
         elif "scholarship" in msg:
-            reply = "Scholarship available based on eligibility and merit."
+            reply = "Scholarship is available based on eligibility, merit and entrance exam performance."
 
         elif "placement" in msg:
-            reply = "Placement support includes training and interview guidance."
+            reply = "Placement support includes training, resume preparation, interview guidance and company placement assistance."
+
+        elif "hostel" in msg:
+            reply = "Hostel facility is available with required student amenities. Fees depend on campus and room type."
 
         elif "course" in msg:
-            reply = "Courses available in Engineering, IT, Management, Law, Pharmacy, Design and Science."
+            reply = "Courses are available in Engineering, IT, Management, Law, Pharmacy, Design and Science."
 
         elif "career" in msg or "it" in msg:
-            reply = "IT careers: Software Developer, Data Analyst, Web Developer, Cyber Security."
+            reply = "IT career options include Software Developer, Web Developer, Data Analyst, Cyber Security Analyst and AI/ML Developer."
 
-        elif "hello" in msg or "hi" in msg:
+        elif "hello" in msg or "hi" in msg or "hii" in msg:
             reply = "Hello 👋 How can I help you today?"
 
         else:
-            reply = "Please share your course interest and qualification."
+            reply = "Please share your course interest, qualification and location so I can guide you better."
+
+        # Save chat history
+        if "user_id" in session:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+
+            cursor.execute(
+                "INSERT INTO chat_history(user_id, user_message, bot_reply) VALUES(?,?,?)",
+                (session["user_id"], msg, reply)
+            )
+
+            conn.commit()
+            conn.close()
 
         return jsonify({"reply": reply})
 
     except Exception as e:
-        print(e)
-        return jsonify({"reply": "Something went wrong."})
+        print("Chat Error:", e)
+        return jsonify({"reply": "Something went wrong. Please try again."})
 
 
-# =====================================
-# ASSESSMENT
-# =====================================
 @app.route("/assessment")
 def assessment():
     if "user_id" not in session:
@@ -272,9 +263,6 @@ def assessment():
     return render_template("assessment.html")
 
 
-# =====================================
-# RESULT
-# =====================================
 @app.route("/result")
 def result():
     if "user_id" not in session:
@@ -283,29 +271,33 @@ def result():
     return render_template("result.html")
 
 
-# =====================================
-# HISTORY
-# =====================================
 @app.route("/history")
 def history():
     if "user_id" not in session:
         return redirect(url_for("login"))
 
-    return render_template("history.html")
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT user_message, bot_reply, created_at
+        FROM chat_history
+        WHERE user_id=?
+        ORDER BY id DESC
+    """, (session["user_id"],))
+
+    chats = cursor.fetchall()
+    conn.close()
+
+    return render_template("history.html", chats=chats)
 
 
-# =====================================
-# LOGOUT
-# =====================================
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect(url_for("index"))
 
 
-# =====================================
-# RUN APP
-# =====================================
 if __name__ == "__main__":
     app.run(
         host="0.0.0.0",
