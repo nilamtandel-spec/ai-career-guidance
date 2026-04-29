@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 import sqlite3
 import os
 import wikipedia
+from duckduckgo_search import DDGS
 
 app = Flask(__name__, template_folder=".")
 app.secret_key = "careerpilot_secret_key"
@@ -213,10 +214,26 @@ def chat():
             reply = "Please type your question."
 
         else:
+            reply = ""
+
+            # Try Wikipedia first
             try:
                 reply = wikipedia.summary(msg, sentences=2)
             except:
-                reply = "Sorry, I could not find the answer. Please ask in simple words."
+                pass
+
+            # If Wikipedia fails, try DuckDuckGo
+            if not reply:
+                try:
+                    with DDGS() as ddgs:
+                        results = list(ddgs.text(msg, max_results=1))
+                        if results:
+                            reply = results[0].get("body", "")
+                except:
+                    pass
+
+            if not reply:
+                reply = "Sorry, I could not find the answer right now. Please ask in simple words."
 
         # Save chat history
         if "user_id" in session:
@@ -235,7 +252,7 @@ def chat():
 
     except Exception as e:
         print("Chat Error:", e)
-        return jsonify({"reply": "Something went wrong. Please try again."})
+        return jsonify({"reply": "Something went wrong."})
 
 
 @app.route("/assessment")
