@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 import sqlite3
 import os
+import wikipedia
 
 app = Flask(__name__, template_folder=".")
 app.secret_key = "careerpilot_secret_key"
@@ -68,10 +69,12 @@ def register():
         try:
             conn = get_db_connection()
             cursor = conn.cursor()
+
             cursor.execute(
                 "INSERT INTO users(name,email,password) VALUES(?,?,?)",
                 (name, email, password)
             )
+
             conn.commit()
             conn.close()
 
@@ -92,6 +95,7 @@ def login():
 
         conn = get_db_connection()
         cursor = conn.cursor()
+
         cursor.execute(
             "SELECT * FROM users WHERE email=? AND password=?",
             (email, password)
@@ -203,37 +207,16 @@ def chatbot():
 def chat():
     try:
         data = request.get_json(silent=True) or {}
-        msg = data.get("message", "").lower().strip()
+        msg = data.get("message", "").strip()
 
         if not msg:
             reply = "Please type your question."
 
-        elif "admission" in msg:
-            reply = "Admission process includes registration, documents submission and fee payment."
-
-        elif "fees" in msg or "fee" in msg:
-            reply = "Fees depend on selected course. Please tell course name."
-
-        elif "scholarship" in msg:
-            reply = "Scholarship is available based on eligibility, merit and entrance exam performance."
-
-        elif "placement" in msg:
-            reply = "Placement support includes training, resume preparation, interview guidance and company placement assistance."
-
-        elif "hostel" in msg:
-            reply = "Hostel facility is available with required student amenities. Fees depend on campus and room type."
-
-        elif "course" in msg:
-            reply = "Courses are available in Engineering, IT, Management, Law, Pharmacy, Design and Science."
-
-        elif "career" in msg or "it" in msg:
-            reply = "IT career options include Software Developer, Web Developer, Data Analyst, Cyber Security Analyst and AI/ML Developer."
-
-        elif "hello" in msg or "hi" in msg or "hii" in msg:
-            reply = "Hello 👋 How can I help you today?"
-
         else:
-            reply = "Please share your course interest, qualification and location so I can guide you better."
+            try:
+                reply = wikipedia.summary(msg, sentences=2)
+            except:
+                reply = "Sorry, I could not find the answer. Please ask in simple words."
 
         # Save chat history
         if "user_id" in session:
