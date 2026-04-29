@@ -1,458 +1,336 @@
-{% extends "layout.html" %}
-{% block content %}
-
-<div class="premium-chat-page">
-
-    <div class="chat-shell">
-
-        <!-- Left Panel -->
-        <aside class="chat-sidebar">
-            <div class="brand-box">
-                <div class="brand-icon">🎓</div>
-                <h2>AI Career Assistant</h2>
-                <p>Ask about courses, career path, admission, fees, scholarship, hostel and placement.</p>
-            </div>
-
-            <div class="quick-box">
-                <h4>Quick Questions</h4>
-
-                <button onclick="quickAsk('Which course is best after 12th science?')">
-                    Best course after 12th Science
-                </button>
-
-                <button onclick="quickAsk('Tell me about admission process')">
-                    Admission Process
-                </button>
-
-                <button onclick="quickAsk('Tell me about scholarship options')">
-                    Scholarship Options
-                </button>
-
-                <button onclick="quickAsk('Which career is best for IT students?')">
-                    Career for IT Students
-                </button>
-
-                <button onclick="quickAsk('Tell me about placement support')">
-                    Placement Support
-                </button>
-            </div>
-
-            <div class="side-note">
-                <strong>Project Module:</strong>
-                <span>Premium AI Chatbot</span>
-            </div>
-        </aside>
-
-        <!-- Chat Area -->
-        <main class="chat-area">
-
-            <div class="chat-header">
-                <div>
-                    <h1>Student Enquiry Chatbot</h1>
-                    <p><span class="online-dot"></span> Online AI Assistant</p>
-                </div>
-
-                <a href="/history" class="history-btn">View History</a>
-            </div>
-
-            <div class="chat-window" id="chatWindow">
-
-                <div class="message bot-message">
-                    <div class="avatar">AI</div>
-                    <div class="bubble">
-                        <p>Hello 👋 Welcome to your AI Student Enquiry Assistant.</p>
-                        <p>You can ask about courses, admission, fees, scholarship, hostel, placement or career guidance.</p>
-                        <span>Now</span>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="typing-box" id="typingBox">
-                AI Assistant is typing<span>.</span><span>.</span><span>.</span>
-            </div>
-
-            <div class="chat-input-box">
-                <input 
-                    type="text" 
-                    id="userInput" 
-                    placeholder="Type your question here..."
-                    onkeydown="handleEnter(event)"
-                >
-                <button onclick="sendMessage()">Send</button>
-            </div>
-
-        </main>
-
-    </div>
-
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Student Enquiry Chatbot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-.premium-chat-page {
-    min-height: 100vh;
-    padding: 30px;
-    background: linear-gradient(135deg, #07152b, #0f2f57, #09111f);
-    color: #fff;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,sans-serif;
 }
 
-.chat-shell {
-    max-width: 1250px;
-    height: 88vh;
-    margin: auto;
-    display: grid;
-    grid-template-columns: 330px 1fr;
-    border-radius: 28px;
-    overflow: hidden;
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(18px);
-    border: 1px solid rgba(255,255,255,0.14);
-    box-shadow: 0 30px 90px rgba(0,0,0,0.45);
+body{
+background:#07152b;
+height:100vh;
+overflow:hidden;
+color:white;
 }
 
-.chat-sidebar {
-    padding: 30px;
-    background: rgba(0,0,0,0.35);
-    border-right: 1px solid rgba(255,255,255,0.12);
+.chat-wrapper{
+height:100vh;
+width:100%;
+display:grid;
+grid-template-columns:300px 1fr;
+background:linear-gradient(135deg,#07152b,#123c69,#0b132b);
 }
 
-.brand-icon {
-    width: 62px;
-    height: 62px;
-    display: grid;
-    place-items: center;
-    border-radius: 20px;
-    background: linear-gradient(135deg, #38bdf8, #2563eb);
-    font-size: 30px;
-    margin-bottom: 18px;
+.sidebar{
+background:rgba(0,0,0,.35);
+padding:25px;
+overflow-y:auto;
 }
 
-.brand-box h2 {
-    font-size: 25px;
-    margin-bottom: 10px;
+.logo{
+font-size:24px;
+font-weight:800;
+margin-bottom:10px;
 }
 
-.brand-box p {
-    color: #cbd5e1;
-    font-size: 14px;
-    line-height: 1.6;
+.subtitle{
+font-size:14px;
+color:#cbd5e1;
+line-height:1.6;
+margin-bottom:25px;
 }
 
-.quick-box {
-    margin-top: 35px;
+.quick-title{
+color:#93c5fd;
+font-weight:700;
+margin-bottom:12px;
 }
 
-.quick-box h4 {
-    color: #93c5fd;
-    margin-bottom: 14px;
+.quick-btn{
+width:100%;
+padding:13px 14px;
+margin-bottom:10px;
+border:none;
+border-radius:12px;
+background:rgba(255,255,255,.12);
+color:white;
+text-align:left;
+cursor:pointer;
 }
 
-.quick-box button {
-    width: 100%;
-    padding: 14px 15px;
-    margin-bottom: 12px;
-    border: none;
-    border-radius: 15px;
-    background: rgba(255,255,255,0.11);
-    color: #fff;
-    text-align: left;
-    cursor: pointer;
-    transition: 0.3s;
-    font-size: 14px;
+.quick-btn:hover{
+background:#2563eb;
 }
 
-.quick-box button:hover {
-    background: #2563eb;
-    transform: translateX(5px);
+.note{
+margin-top:30px;
+padding:16px;
+border-radius:14px;
+background:rgba(56,189,248,.15);
+border:1px solid rgba(56,189,248,.35);
 }
 
-.side-note {
-    margin-top: 35px;
-    padding: 18px;
-    border-radius: 18px;
-    background: rgba(56,189,248,0.12);
-    border: 1px solid rgba(56,189,248,0.25);
+.chat-main{
+height:100vh;
+display:grid;
+grid-template-rows:80px minmax(0,1fr) 80px;
+overflow:hidden;
 }
 
-.side-note strong {
-    display: block;
-    margin-bottom: 6px;
+.chat-header{
+padding:20px 28px;
+background:rgba(255,255,255,.08);
+border-bottom:1px solid rgba(255,255,255,.1);
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
 
-.side-note span {
-    color: #cbd5e1;
-    font-size: 14px;
+.chat-header h2{
+font-size:22px;
 }
 
-.chat-area {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+.status{
+font-size:13px;
+color:#86efac;
 }
 
-.chat-header {
-    padding: 24px 30px;
-    background: rgba(255,255,255,0.08);
-    border-bottom: 1px solid rgba(255,255,255,0.12);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.chat-box{
+min-height:0;
+overflow-y:auto;
+padding:28px;
+padding-bottom:40px;
 }
 
-.chat-header h1 {
-    font-size: 24px;
-    margin-bottom: 5px;
+.message{
+display:flex;
+margin-bottom:18px;
 }
 
-.chat-header p {
-    font-size: 14px;
-    color: #bbf7d0;
+.message.user{
+justify-content:flex-end;
 }
 
-.online-dot {
-    width: 9px;
-    height: 9px;
-    background: #22c55e;
-    display: inline-block;
-    border-radius: 50%;
-    margin-right: 6px;
+.bubble{
+max-width:70%;
+padding:14px 16px;
+border-radius:18px;
+font-size:15px;
+line-height:1.6;
+word-break:break-word;
 }
 
-.history-btn {
-    text-decoration: none;
-    color: white;
-    background: linear-gradient(135deg, #38bdf8, #2563eb);
-    padding: 11px 18px;
-    border-radius: 14px;
-    font-size: 14px;
-    font-weight: 600;
+.bot .bubble{
+background:rgba(255,255,255,.14);
+border-top-left-radius:4px;
 }
 
-.chat-window {
-    flex: 1;
-    padding: 30px;
-    overflow-y: auto;
+.user .bubble{
+background:linear-gradient(135deg,#2563eb,#1d4ed8);
+border-top-right-radius:4px;
 }
 
-.message {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 22px;
-    animation: fadeUp 0.3s ease;
+.time{
+display:block;
+font-size:11px;
+color:#cbd5e1;
+margin-top:6px;
 }
 
-.user-message {
-    justify-content: flex-end;
+.chat-input{
+height:80px;
+padding:15px 24px;
+display:flex;
+gap:12px;
+background:rgba(0,0,0,.45);
+border-top:1px solid rgba(255,255,255,.1);
 }
 
-.avatar {
-    width: 42px;
-    height: 42px;
-    border-radius: 14px;
-    display: grid;
-    place-items: center;
-    font-size: 13px;
-    font-weight: 700;
-    background: linear-gradient(135deg, #38bdf8, #2563eb);
-    flex-shrink: 0;
+.chat-input input{
+flex:1;
+padding:15px 16px;
+border:none;
+outline:none;
+border-radius:14px;
+background:rgba(255,255,255,.14);
+color:white;
+font-size:15px;
 }
 
-.user-message .avatar {
-    background: linear-gradient(135deg, #f97316, #dc2626);
-    order: 2;
+.chat-input button{
+width:120px;
+border:none;
+border-radius:14px;
+background:linear-gradient(135deg,#38bdf8,#2563eb);
+color:white;
+font-weight:700;
+cursor:pointer;
 }
 
-.bubble {
-    max-width: 70%;
-    padding: 16px 18px;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.13);
-    line-height: 1.6;
-    font-size: 15px;
+.chat-input button:disabled{
+opacity:.7;
+cursor:not-allowed;
 }
 
-.user-message .bubble {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+@media(max-width:850px){
+.chat-wrapper{
+grid-template-columns:1fr;
 }
 
-.bubble span {
-    display: block;
-    margin-top: 8px;
-    color: #cbd5e1;
-    font-size: 11px;
+.sidebar{
+display:none;
 }
 
-.typing-box {
-    display: none;
-    padding: 0 30px 12px;
-    color: #cbd5e1;
-    font-size: 14px;
+.bubble{
+max-width:85%;
 }
-
-.typing-box span {
-    animation: blink 1s infinite;
-}
-
-.typing-box span:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.typing-box span:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
-.chat-input-box {
-    padding: 22px 28px;
-    background: rgba(0,0,0,0.32);
-    border-top: 1px solid rgba(255,255,255,0.12);
-    display: flex;
-    gap: 12px;
-}
-
-.chat-input-box input {
-    flex: 1;
-    border: none;
-    outline: none;
-    padding: 16px 18px;
-    border-radius: 16px;
-    background: rgba(255,255,255,0.12);
-    color: white;
-    font-size: 15px;
-}
-
-.chat-input-box input::placeholder {
-    color: #cbd5e1;
-}
-
-.chat-input-box button {
-    border: none;
-    border-radius: 16px;
-    padding: 0 26px;
-    background: linear-gradient(135deg, #38bdf8, #2563eb);
-    color: white;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.chat-input-box button:hover {
-    transform: scale(1.05);
-}
-
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes blink {
-    0%, 100% {
-        opacity: 0.2;
-    }
-    50% {
-        opacity: 1;
-    }
-}
-
-@media(max-width: 900px) {
-    .premium-chat-page {
-        padding: 0;
-    }
-
-    .chat-shell {
-        height: 100vh;
-        grid-template-columns: 1fr;
-        border-radius: 0;
-    }
-
-    .chat-sidebar {
-        display: none;
-    }
-
-    .bubble {
-        max-width: 85%;
-    }
 }
 </style>
+</head>
+
+<body>
+
+<div class="chat-wrapper">
+
+<div class="sidebar">
+<div class="logo">🎓 Sandip AI</div>
+
+<div class="subtitle">
+Smart student enquiry assistant for admission, course, fees, scholarship, hostel and placement guidance.
+</div>
+
+<div class="quick-title">Quick Questions</div>
+
+<button class="quick-btn" onclick="quickQuestion('Tell me about admission process')">Admission Process</button>
+<button class="quick-btn" onclick="quickQuestion('Tell me about scholarship')">Scholarship Details</button>
+<button class="quick-btn" onclick="quickQuestion('Which courses are available?')">Available Courses</button>
+<button class="quick-btn" onclick="quickQuestion('Tell me about hostel facility')">Hostel Facility</button>
+<button class="quick-btn" onclick="quickQuestion('Tell me about placement')">Placement Support</button>
+
+<div class="note">
+<strong>Project Module:</strong><br>
+Premium AI Chatbot
+</div>
+</div>
+
+<div class="chat-main">
+
+<div class="chat-header">
+<div>
+<h2>AI Student Enquiry Chatbot</h2>
+<div class="status">● Online Assistant</div>
+</div>
+<div>Premium Final Year Project</div>
+</div>
+
+<div class="chat-box" id="chatBox">
+<div class="message bot">
+<div class="bubble">
+Hello 👋 Welcome to Sandip University AI Student Enquiry Assistant.<br>
+Ask me about admission, course, fees, scholarship, hostel or placement.
+<span class="time">Now</span>
+</div>
+</div>
+</div>
+
+<div class="chat-input">
+<input type="text" id="userInput" placeholder="Type your question here..." onkeydown="handleKey(event)">
+<button id="sendBtn" onclick="sendMessage()">Send</button>
+</div>
+
+</div>
+</div>
 
 <script>
-function handleEnter(event) {
-    if (event.key === "Enter") {
-        sendMessage();
-    }
+function handleKey(event){
+if(event.key==="Enter"){
+sendMessage();
+}
 }
 
-function quickAsk(question) {
-    document.getElementById("userInput").value = question;
-    sendMessage();
+function quickQuestion(text){
+document.getElementById("userInput").value=text;
+sendMessage();
 }
 
-function getCurrentTime() {
-    const now = new Date();
-    return now.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit"
-    });
+function getTime(){
+return new Date().toLocaleTimeString([],{
+hour:"2-digit",
+minute:"2-digit"
+});
 }
 
-function addMessage(text, type) {
-    const chatWindow = document.getElementById("chatWindow");
-
-    const messageDiv = document.createElement("div");
-    messageDiv.className = type === "user" ? "message user-message" : "message bot-message";
-
-    messageDiv.innerHTML = `
-        <div class="avatar">${type === "user" ? "You" : "AI"}</div>
-        <div class="bubble">
-            <p>${text}</p>
-            <span>${getCurrentTime()}</span>
-        </div>
-    `;
-
-    chatWindow.appendChild(messageDiv);
-    chatWindow.scrollTop = chatWindow.scrollHeight;
+function scrollToBottom(){
+const chatBox=document.getElementById("chatBox");
+chatBox.scrollTop=chatBox.scrollHeight;
 }
 
-function sendMessage() {
-    const input = document.getElementById("userInput");
-    const message = input.value.trim();
+function addMessage(text,type){
+const chatBox=document.getElementById("chatBox");
 
-    if (message === "") return;
+const msg=document.createElement("div");
+msg.className="message "+type;
 
-    addMessage(message, "user");
-    input.value = "";
+msg.innerHTML=`
+<div class="bubble">
+${text}
+<span class="time">${getTime()}</span>
+</div>
+`;
 
-    const typingBox = document.getElementById("typingBox");
-    typingBox.style.display = "block";
+chatBox.appendChild(msg);
 
-    fetch("/chat", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            message: message
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        setTimeout(() => {
-            typingBox.style.display = "none";
-
-            let reply = data.reply || data.response || data.answer || "Sorry, I could not generate an answer right now.";
-            addMessage(reply, "bot");
-        }, 700);
-    })
-    .catch(error => {
-        typingBox.style.display = "none";
-        addMessage("Sorry, I could not generate an answer right now.", "bot");
-    });
+setTimeout(scrollToBottom,100);
 }
+
+function sendMessage(){
+const input=document.getElementById("userInput");
+const btn=document.getElementById("sendBtn");
+const text=input.value.trim();
+
+if(text===""){
+return;
+}
+
+addMessage(text,"user");
+input.value="";
+
+btn.innerText="Typing...";
+btn.disabled=true;
+
+fetch("/chat",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({message:text})
+})
+.then(res=>res.json())
+.then(data=>{
+setTimeout(()=>{
+addMessage(data.reply || "Sorry, I could not generate an answer right now.","bot");
+btn.innerText="Send";
+btn.disabled=false;
+input.focus();
+},700);
+})
+.catch(()=>{
+addMessage("Sorry, I could not generate an answer right now.","bot");
+btn.innerText="Send";
+btn.disabled=false;
+input.focus();
+});
+}
+
+window.onload=scrollToBottom;
 </script>
 
-{% endblock %}
+</body>
+</html>
