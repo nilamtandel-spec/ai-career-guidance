@@ -2,21 +2,40 @@
 {% block title %}Assessment{% endblock %}
 
 {% block content %}
-<div class="assessment-card">
-    <h2>Career Assessment Test</h2>
-    <form method="POST">
-        {% for question in questions %}
-            <div class="question-block">
-                <p><strong>Q{{ loop.index }}. {{ question.question_text }}</strong></p>
 
-                <label><input type="radio" name="question_{{ question.id }}" value="A" required> {{ question.option_a }}</label><br>
-                <label><input type="radio" name="question_{{ question.id }}" value="B" required> {{ question.option_b }}</label><br>
-                <label><input type="radio" name="question_{{ question.id }}" value="C" required> {{ question.option_c }}</label><br>
-                <label><input type="radio" name="question_{{ question.id }}" value="D" required> {{ question.option_d }}</label>
-            </div>
-        {% endfor %}
+<h1>Career Assessment</h1>
 
-        <button type="submit" class="btn">Submit Assessment</button>
-    </form>
+<form method="POST">
+
+{% set total = questions|length %}
+
+{% for q in questions %}
+<div class="card question">
+
+<p><strong>Q{{ loop.index }}/{{ total }}. {{ q.question_text }}</strong></p>
+
+<label><input type="radio" name="question_{{ q.id }}" value="A" required> {{ q.option_a }}</label>
+<label><input type="radio" name="question_{{ q.id }}" value="B"> {{ q.option_b }}</label>
+<label><input type="radio" name="question_{{ q.id }}" value="C"> {{ q.option_c }}</label>
+<label><input type="radio" name="question_{{ q.id }}" value="D"> {{ q.option_d }}</label>
+
 </div>
+{% endfor %}
+
+<button class="btn">Submit Assessment</button>
+
+</form>
+
+<style>
+.question{
+margin-bottom:20px;
+}
+
+label{
+display:block;
+margin:8px 0;
+cursor:pointer;
+}
+</style>
+
 {% endblock %}
