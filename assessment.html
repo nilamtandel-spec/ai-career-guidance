@@ -3,82 +3,118 @@
 
 {% block content %}
 
-<div class="assessment-card">
-<h2>Career Assessment Test</h2>
+<div class="assessment-wrapper">
 
-<form method="POST">
+    <div class="assessment-header">
+        <h1>Career Assessment Test</h1>
+        <p>Answer all questions carefully to get your best career suggestion.</p>
+    </div>
 
-{% set questions = [
-("Which activity do you enjoy the most?", "Solving computer problems", "Drawing / Designing", "Leading a team", "Helping people"),
-("Which subject do you like most?", "Computer / Mathematics", "Art / Media", "Commerce / Economics", "Psychology / Communication"),
-("How do you usually solve problems?", "Using logic and analysis", "Using creativity", "Planning strategy", "Talking with others"),
-("Which work environment suits you best?", "Tech office / Lab", "Creative studio", "Corporate office", "Public interaction place"),
-("Which tool would you prefer to use?", "Laptop / Software", "Camera / Design tools", "Reports / Business tools", "Phone / Communication tools"),
-("What type of task excites you most?", "Building apps / websites", "Creating videos / graphics", "Running business projects", "Guiding students / customers"),
-("What is your strongest skill?", "Technical thinking", "Creative imagination", "Leadership ability", "Communication skill"),
-("Which career sounds best to you?", "Software Engineer", "Graphic Designer", "Business Manager", "Counsellor / HR"),
-("How do you prefer to work?", "With systems and data", "With ideas and visuals", "With targets and plans", "With people and support"),
-("What motivates you more?", "Innovation", "Creativity", "Success and growth", "Helping others succeed"),
-("Which college stream interests you most?", "IT / Engineering", "Design / Animation", "Management / Commerce", "Humanities / Communication"),
-("How do friends describe you?", "Smart and logical", "Creative and stylish", "Confident leader", "Friendly and supportive"),
-("Which future role do you imagine?", "Tech Expert", "Creative Artist", "CEO / Entrepreneur", "Mentor / Advisor"),
-("Which challenge would you enjoy?", "Fixing software issue", "Designing a brand logo", "Managing company growth", "Solving customer problem"),
-("What matters most in your career?", "Innovation and technology", "Expression and creativity", "Money and leadership", "Meaningful human impact")
-] %}
+    <form method="POST">
 
-{% for q in questions %}
-<div class="question-block">
-<p><strong>Q{{ loop.index }}. {{ q[0] }}</strong></p>
+        {% for q in questions %}
+        <div class="question-card">
+            <h3>Q{{ loop.index }}. {{ q.question_text }}</h3>
 
-<label><input type="radio" name="question_{{ loop.index }}" value="A" required> {{ q[1] }}</label><br>
-<label><input type="radio" name="question_{{ loop.index }}" value="B" required> {{ q[2] }}</label><br>
-<label><input type="radio" name="question_{{ loop.index }}" value="C" required> {{ q[3] }}</label><br>
-<label><input type="radio" name="question_{{ loop.index }}" value="D" required> {{ q[4] }}</label>
-</div>
-{% endfor %}
+            <label>
+                <input type="radio" name="question_{{ q.id }}" value="A" required>
+                <span>{{ q.option_a }}</span>
+            </label>
 
-<button type="submit" class="btn">Submit Assessment</button>
+            <label>
+                <input type="radio" name="question_{{ q.id }}" value="B">
+                <span>{{ q.option_b }}</span>
+            </label>
 
-</form>
+            <label>
+                <input type="radio" name="question_{{ q.id }}" value="C">
+                <span>{{ q.option_c }}</span>
+            </label>
+
+            <label>
+                <input type="radio" name="question_{{ q.id }}" value="D">
+                <span>{{ q.option_d }}</span>
+            </label>
+        </div>
+        {% endfor %}
+
+        <button type="submit" class="submit-btn">Submit Assessment</button>
+
+    </form>
+
 </div>
 
 <style>
-.assessment-card{
-max-width:900px;
-margin:40px auto;
-background:white;
-padding:30px;
-border-radius:18px;
-box-shadow:0 20px 50px rgba(0,0,0,0.12);
+.assessment-wrapper {
+    max-width: 950px;
+    margin: 40px auto;
 }
 
-.question-block{
-padding:18px;
-margin-bottom:18px;
-border-radius:14px;
-background:#f8fafc;
-border:1px solid #e5e7eb;
+.assessment-header {
+    background: #ffffff !important;
+    padding: 28px;
+    border-radius: 18px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
 }
 
-.question-block p{
-margin-bottom:12px;
-font-size:17px;
+.assessment-header h1 {
+    color: #111827 !important;
+    margin-bottom: 8px;
 }
 
-.question-block label{
-display:block;
-padding:8px 0;
-font-size:15px;
+.assessment-header p {
+    color: #374151 !important;
 }
 
-.btn{
-padding:14px 28px;
-border:none;
-border-radius:12px;
-background:#2563eb;
-color:white;
-font-weight:700;
-cursor:pointer;
+.question-card {
+    background: #ffffff !important;
+    padding: 24px;
+    border-radius: 18px;
+    margin-bottom: 22px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.question-card h3 {
+    color: #111827 !important;
+    margin-bottom: 18px;
+    font-size: 20px;
+}
+
+.question-card label {
+    display: block;
+    padding: 13px 15px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    background: #f8fafc !important;
+    color: #111827 !important;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.question-card label span {
+    color: #111827 !important;
+}
+
+.question-card label:hover {
+    background: #e0f2fe !important;
+}
+
+.question-card input {
+    margin-right: 10px;
+}
+
+.submit-btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #38bdf8, #2563eb);
+    color: white !important;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
 }
 </style>
 
