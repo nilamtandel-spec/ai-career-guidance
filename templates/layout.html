@@ -8,7 +8,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
 
 body{
 background:linear-gradient(135deg,#07152b,#123c69,#0b132b);
@@ -33,7 +38,7 @@ font-weight:700;
 }
 
 .nav-links a{
-margin-left:20px;
+margin-left:18px;
 text-decoration:none;
 color:white;
 font-size:14px;
@@ -44,16 +49,25 @@ transition:0.3s;
 color:#38bdf8;
 }
 
-/* Main Content */
+/* Admin Button */
+.admin-btn{
+background:linear-gradient(135deg,#f97316,#ef4444);
+padding:8px 14px;
+border-radius:10px;
+color:white !important;
+font-weight:700;
+}
+
+/* Container */
 .container{
 max-width:1100px;
 margin:40px auto;
 padding:20px;
 }
 
-/* Cards */
+/* Card */
 .card{
-background:rgba(255,255,255,0.06);
+background:rgba(255,255,255,0.08);
 padding:25px;
 border-radius:18px;
 box-shadow:0 20px 40px rgba(0,0,0,0.3);
@@ -85,20 +99,39 @@ opacity:0.7;
 
 <body>
 
+<!-- Navbar -->
 <div class="navbar">
 <div class="logo">CareerPilot AI</div>
 
-.nav-links a:last-child {
-    background: linear-gradient(135deg,#f97316,#ef4444);
-    padding: 8px 14px;
-    border-radius: 10px;
-}
+<div class="nav-links">
+
+    {% if session.get('admin_id') %}
+        <a href="{{ url_for('admin_dashboard') }}">Admin Panel</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+
+    {% elif session.get('user_id') %}
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('assessment') }}">Assessment</a>
+        <a href="{{ url_for('chatbot') }}">Chatbot</a>
+        <a href="{{ url_for('history') }}">History</a>
+        <a href="{{ url_for('admin_login') }}" class="admin-btn">Admin</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+
+    {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('register') }}">Register</a>
+        <a href="{{ url_for('admin_login') }}" class="admin-btn">Admin</a>
+    {% endif %}
+
+</div>
 </div>
 
+<!-- Content -->
 <div class="container">
 {% block content %}{% endblock %}
 </div>
 
+<!-- Footer -->
 <div class="footer">
 © 2026 CareerPilot AI • Smart Career Guidance System
 </div>
