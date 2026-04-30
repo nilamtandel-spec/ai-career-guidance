@@ -1,109 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{% block title %}CareerPilot AI{% endblock %}</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - CareerPilot AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    body{
+      font-family:'Inter',sans-serif;
+      min-height:100vh;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at top left, rgba(0,255,220,0.08), transparent 30%),
+        linear-gradient(135deg, #041b34 0%, #0a2d4a 45%, #123b57 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+    .bg-orb{
+      position:absolute;
+      border-radius:50%;
+      background: radial-gradient(circle at 70% 30%, #dffdf8 0%, #62f5d7 35%, #10d8c4 70%, #0bc5be 100%);
+      filter: blur(0px);
+      opacity:0.95;
+      box-shadow: 0 0 60px rgba(83,255,220,0.25);
+    }
 
-body{
-background:linear-gradient(135deg,#07152b,#123c69,#0b132b);
-color:white;
-min-height:100vh;
-}
+    .orb1{
+      width:340px;
+      height:340px;
+      right:300px;
+      top:140px;
+    }
 
-/* Navbar */
-.navbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:18px 40px;
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(12px);
-border-bottom:1px solid rgba(255,255,255,0.1);
-}
+    .orb2{
+      width:210px;
+      height:210px;
+      left:420px;
+      top:180px;
+    }
 
-.logo{
-font-size:20px;
-font-weight:700;
-}
+    .orb3{
+      width:250px;
+      height:250px;
+      left:420px;
+      bottom:110px;
+    }
 
-.nav-links a{
-margin-left:20px;
-text-decoration:none;
-color:white;
-font-size:14px;
-transition:0.3s;
-}
+    .orb4{
+      width:210px;
+      height:210px;
+      right:330px;
+      bottom:70px;
+    }
 
-.nav-links a:hover{
-color:#38bdf8;
-}
+    .orb5{
+      width:110px;
+      height:110px;
+      left:70px;
+      top:330px;
+      filter: blur(10px);
+    }
 
-/* Main Content */
-.container{
-max-width:1100px;
-margin:40px auto;
-padding:20px;
-}
+    .login-shell{
+      position:relative;
+      z-index:5;
+      width:100%;
+      max-width:520px;
+      padding:20px;
+    }
 
-/* Cards */
-.card{
-background:rgba(255,255,255,0.06);
-padding:25px;
-border-radius:18px;
-box-shadow:0 20px 40px rgba(0,0,0,0.3);
-}
+    .login-card{
+      position:relative;
+      padding:52px 46px 34px;
+      border-radius:46% 54% 50% 50% / 42% 43% 57% 58%;
+      background: rgba(32, 39, 66, 0.42);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 2px solid rgba(120, 208, 255, 0.65);
+      box-shadow:
+        0 0 40px rgba(0,0,0,0.18),
+        inset 0 0 80px rgba(106,255,228,0.08);
+      min-height: 620px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
 
-/* Buttons */
-.btn{
-display:inline-block;
-padding:12px 20px;
-border-radius:12px;
-background:linear-gradient(135deg,#38bdf8,#2563eb);
-color:white;
-font-weight:600;
-text-decoration:none;
-margin-top:10px;
-}
+    .glow{
+      position:absolute;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background: radial-gradient(circle, rgba(157,255,239,0.95) 0%, rgba(50,220,220,0.45) 40%, transparent 75%);
+      filter: blur(18px);
+      left:20px;
+      bottom:95px;
+      pointer-events:none;
+    }
 
-/* Footer */
-.footer{
-text-align:center;
-padding:20px;
-margin-top:40px;
-font-size:13px;
-opacity:0.7;
-}
-</style>
+    .glow2{
+      position:absolute;
+      width:190px;
+      height:190px;
+      border-radius:50%;
+      background: radial-gradient(circle, rgba(123,255,239,0.55) 0%, rgba(50,220,220,0.18) 40%, transparent 75%);
+      filter: blur(25px);
+      right:40px;
+      top:110px;
+      pointer-events:none;
+    }
 
+    .brand{
+      text-align:center;
+      margin-bottom:14px;
+      color:#d6f7ff;
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:1px;
+      text-transform:uppercase;
+    }
+
+    h1{
+      text-align:center;
+      color:#f4fbff;
+      font-size:52px;
+      font-weight:300;
+      letter-spacing:1px;
+      margin-bottom:26px;
+    }
+
+    .form-group{
+      margin-bottom:20px;
+      position:relative;
+      z-index:2;
+    }
+
+    label{
+      display:block;
+      color:rgba(233,245,255,0.82);
+      font-size:24px;
+      font-weight:400;
+      margin-bottom:8px;
+    }
+
+    input{
+      width:100%;
+      border:none;
+      outline:none;
+      background: rgba(26, 108, 160, 0.72);
+      color:white;
+      padding:18px 22px;
+      border-radius:16px;
+      font-size:20px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+
+    input::placeholder{
+      color:rgba(255,255,255,0.45);
+    }
+
+    .btn{
+      width:100%;
+      margin-top:10px;
+      border:none;
+      outline:none;
+      cursor:pointer;
+      padding:18px 22px;
+      border-radius:999px;
+      font-size:28px;
+      font-weight:500;
+      color:#16b5ff;
+      background: rgba(24, 108, 167, 0.9);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+      transition: transform .2s ease, background .2s ease;
+      position:relative;
+      z-index:2;
+    }
+
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(27, 117, 180, 0.95);
+    }
+
+    .bottom-links{
+      margin-top:26px;
+      display:flex;
+      justify-content:center;
+      gap:22px;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:2;
+    }
+
+    .bottom-links a{
+      color:rgba(255,255,255,0.9);
+      font-size:16px;
+      text-decoration:none;
+      transition:.2s ease;
+    }
+
+    .bottom-links a:hover{
+      color:#8bf8ea;
+    }
+
+    .home-link{
+      margin-top:18px;
+      text-align:center;
+      position:relative;
+      z-index:2;
+    }
+
+    .home-link a{
+      color:rgba(255,255,255,0.75);
+      text-decoration:none;
+      font-size:14px;
+    }
+
+    .home-link a:hover{
+      color:#9bf7f3;
+    }
+
+    .flash-wrap{
+      margin-bottom:16px;
+      position:relative;
+      z-index:2;
+    }
+
+    .flash{
+      padding:12px 14px;
+      border-radius:12px;
+      font-size:14px;
+      margin-bottom:10px;
+      color:white;
+    }
+
+    .flash.success{ background: rgba(34,197,94,0.22); border:1px solid rgba(34,197,94,0.45); }
+    .flash.danger{ background: rgba(239,68,68,0.22); border:1px solid rgba(239,68,68,0.45); }
+    .flash.info{ background: rgba(59,130,246,0.22); border:1px solid rgba(59,130,246,0.45); }
+
+    @media (max-width: 900px){
+      .orb1,.orb2,.orb3,.orb4,.orb5{
+        transform: scale(0.75);
+      }
+      h1{ font-size:42px; }
+      label{ font-size:20px; }
+      input{ font-size:18px; }
+      .btn{ font-size:24px; }
+    }
+
+    @media (max-width: 600px){
+      body{
+        overflow:auto;
+        padding:24px 0;
+      }
+      .login-card{
+        border-radius:36px;
+        min-height:auto;
+        padding:34px 24px 28px;
+      }
+      h1{ font-size:34px; }
+      label{ font-size:18px; }
+      input{ font-size:16px; padding:15px 16px; }
+      .btn{ font-size:22px; padding:15px 18px; }
+      .orb1,.orb2,.orb3,.orb4,.orb5{
+        opacity:0.55;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="navbar">
-<div class="logo">CareerPilot AI</div>
+  <div class="bg-orb orb1"></div>
+  <div class="bg-orb orb2"></div>
+  <div class="bg-orb orb3"></div>
+  <div class="bg-orb orb4"></div>
+  <div class="bg-orb orb5"></div>
 
-<div class="nav-links">
-<a href="{{ url_for('dashboard') }}">Dashboard</a>
-<a href="{{ url_for('assessment') }}">Assessment</a>
-<a href="{{ url_for('chatbot') }}">Chatbot</a>
-<a href="{{ url_for('history') }}">History</a>
-<a href="{{ url_for('logout') }}">Logout</a>
-</div>
-</div>
+  <div class="login-shell">
+    <div class="login-card">
+      <div class="glow"></div>
+      <div class="glow2"></div>
 
-<div class="container">
-{% block content %}{% endblock %}
-</div>
+      <div class="brand">CareerPilot AI</div>
+      <h1>LOGIN</h1>
 
-<div class="footer">
-© 2026 CareerPilot AI • Smart Career Guidance System
-</div>
+      <div class="flash-wrap">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+      </div>
+
+      <form method="POST">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="Enter your email" required>
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" name="password" placeholder="Enter your password" required>
+        </div>
+
+        <button type="submit" class="btn">Sign In</button>
+      </form>
+
+      <div class="bottom-links">
+        <a href="#">Forgot password?</a>
+        <a href="{{ url_for('register') }}">Sign up</a>
+      </div>
+
+      <div class="home-link">
+        <a href="{{ url_for('index') }}">← Back to Platform</a>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
