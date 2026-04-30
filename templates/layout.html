@@ -5,298 +5,105 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{% block title %}CareerPilot AI{% endblock %}</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 
 body{
-    font-family:'Inter',sans-serif;
-    background:linear-gradient(180deg,#f8fbff 0%,#eef4ff 100%);
-    color:#0f172a;
-    min-height:100vh;
+background:linear-gradient(135deg,#07152b,#123c69,#0b132b);
+color:white;
+min-height:100vh;
 }
 
-a{
-    text-decoration:none;
-}
-
+/* Navbar */
 .navbar{
-    position:sticky;
-    top:0;
-    z-index:999;
-    backdrop-filter:blur(14px);
-    background:rgba(255,255,255,0.82);
-    border-bottom:1px solid rgba(226,232,240,0.9);
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 40px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(12px);
+border-bottom:1px solid rgba(255,255,255,0.1);
 }
 
-.nav-wrap{
-    max-width:1280px;
-    margin:auto;
-    padding:16px 22px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:20px;
-    flex-wrap:wrap;
+.logo{
+font-size:20px;
+font-weight:700;
 }
 
-.brand{
-    display:flex;
-    align-items:center;
-    gap:12px;
+.nav-links a{
+margin-left:20px;
+text-decoration:none;
+color:white;
+font-size:14px;
+transition:0.3s;
 }
 
-.brand-logo{
-    width:46px;
-    height:46px;
-    border-radius:14px;
-    background:linear-gradient(135deg,#2563eb,#1d4ed8,#60a5fa);
-    color:white;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:22px;
-    font-weight:800;
-    box-shadow:0 10px 24px rgba(37,99,235,0.25);
+.nav-links a:hover{
+color:#38bdf8;
 }
 
-.brand-text{
-    display:flex;
-    flex-direction:column;
-}
-
-.brand-text strong{
-    font-size:17px;
-    font-weight:800;
-    color:#0f172a;
-}
-
-.brand-text span{
-    font-size:12px;
-    color:#64748b;
-    font-weight:600;
-}
-
-.nav-links{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    flex-wrap:wrap;
-}
-
-.nav-link{
-    padding:11px 15px;
-    border-radius:12px;
-    color:#334155;
-    font-size:14px;
-    font-weight:700;
-    transition:0.22s ease;
-}
-
-.nav-link:hover{
-    background:#eff6ff;
-    color:#1d4ed8;
-}
-
-.nav-link.primary{
-    background:#2563eb;
-    color:white;
-    box-shadow:0 10px 20px rgba(37,99,235,0.18);
-}
-
-.nav-link.primary:hover{
-    background:#1d4ed8;
-    color:white;
-    transform:translateY(-1px);
-}
-
+/* Main Content */
 .container{
-    max-width:1280px;
-    margin:auto;
-    padding:28px 20px 40px;
+max-width:1100px;
+margin:40px auto;
+padding:20px;
 }
 
-.alert{
-    padding:14px 16px;
-    border-radius:14px;
-    margin-bottom:18px;
-    font-size:14px;
-    font-weight:600;
-    border:1px solid transparent;
+/* Cards */
+.card{
+background:rgba(255,255,255,0.06);
+padding:25px;
+border-radius:18px;
+box-shadow:0 20px 40px rgba(0,0,0,0.3);
 }
 
-.alert.success{
-    background:#ecfdf5;
-    color:#166534;
-    border-color:#bbf7d0;
+/* Buttons */
+.btn{
+display:inline-block;
+padding:12px 20px;
+border-radius:12px;
+background:linear-gradient(135deg,#38bdf8,#2563eb);
+color:white;
+font-weight:600;
+text-decoration:none;
+margin-top:10px;
 }
 
-.alert.danger{
-    background:#fef2f2;
-    color:#991b1b;
-    border-color:#fecaca;
-}
-
-.alert.info{
-    background:#eff6ff;
-    color:#1d4ed8;
-    border-color:#bfdbfe;
-}
-
+/* Footer */
 .footer{
-    margin-top:40px;
-    padding:28px 20px 40px;
-}
-
-.footer-card{
-    max-width:1280px;
-    margin:auto;
-    background:#0f172a;
-    color:white;
-    border-radius:24px;
-    padding:28px;
-    display:flex;
-    justify-content:space-between;
-    gap:20px;
-    flex-wrap:wrap;
-    align-items:center;
-    box-shadow:0 18px 40px rgba(15,23,42,0.18);
-}
-
-.footer-title{
-    font-size:20px;
-    font-weight:800;
-    margin-bottom:6px;
-}
-
-.footer-text{
-    color:rgba(255,255,255,0.78);
-    font-size:14px;
-    line-height:1.7;
-    max-width:700px;
-}
-
-.footer-badge{
-    background:rgba(255,255,255,0.08);
-    padding:12px 16px;
-    border-radius:14px;
-    font-size:13px;
-    font-weight:700;
-}
-
-@media (max-width:900px){
-    .nav-wrap{
-        flex-direction:column;
-        align-items:flex-start;
-    }
-
-    .nav-links{
-        width:100%;
-    }
-
-    .nav-link{
-        flex:1;
-        text-align:center;
-    }
-}
-
-@media (max-width:600px){
-    .nav-links{
-        display:grid;
-        grid-template-columns:1fr 1fr;
-        width:100%;
-    }
-
-    .nav-link{
-        width:100%;
-    }
-
-    .container{
-        padding:20px 14px 30px;
-    }
-
-    .footer-card{
-        padding:22px;
-    }
+text-align:center;
+padding:20px;
+margin-top:40px;
+font-size:13px;
+opacity:0.7;
 }
 </style>
+
 </head>
 
 <body>
 
-<nav class="navbar">
-    <div class="nav-wrap">
+<div class="navbar">
+<div class="logo">CareerPilot AI</div>
 
-        <a href="{{ url_for('index') }}" class="brand">
-            <div class="brand-logo">CP</div>
-            <div class="brand-text">
-                <strong>CareerPilot AI</strong>
-                <span>AI-Powered Career Growth Platform</span>
-            </div>
-        </a>
+<div class="nav-links">
+<a href="{{ url_for('dashboard') }}">Dashboard</a>
+<a href="{{ url_for('assessment') }}">Assessment</a>
+<a href="{{ url_for('chatbot') }}">Chatbot</a>
+<a href="{{ url_for('history') }}">History</a>
+<a href="{{ url_for('logout') }}">Logout</a>
+</div>
+</div>
 
-        <div class="nav-links">
+<div class="container">
+{% block content %}{% endblock %}
+</div>
 
-            <a class="nav-link" href="{{ url_for('index') }}">Platform</a>
-            <a class="nav-link" href="{{ url_for('chatbot') }}">Career AI</a>
-
-            {% if session.get('user_id') %}
-                <a class="nav-link" href="{{ url_for('dashboard') }}">Workspace</a>
-                <a class="nav-link" href="{{ url_for('assessment') }}">Insights Test</a>
-                <a class="nav-link" href="{{ url_for('history') }}">Reports</a>
-                <a class="nav-link primary" href="{{ url_for('logout') }}">Logout</a>
-
-            {% elif session.get('admin_id') %}
-                <a class="nav-link primary" href="{{ url_for('admin_dashboard') }}">Admin Analytics</a>
-
-            {% else %}
-                <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-                <a class="nav-link" href="{{ url_for('register') }}">Get Started</a>
-                <a class="nav-link primary" href="{{ url_for('admin_login') }}">Admin</a>
-            {% endif %}
-
-        </div>
-
-    </div>
-</nav>
-
-<main class="container">
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert {{ category }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-
-    {% block content %}{% endblock %}
-
-</main>
-
-<footer class="footer">
-    <div class="footer-card">
-
-        <div>
-            <div class="footer-title">CareerPilot AI</div>
-            <div class="footer-text">
-                The modern AI platform helping students make smarter career decisions with confidence.
-            </div>
-        </div>
-
-        <div class="footer-badge">
-            Smart Guidance • Modern UI • Student Focused
-        </div>
-
-    </div>
-</footer>
+<div class="footer">
+© 2026 CareerPilot AI • Smart Career Guidance System
+</div>
 
 </body>
 </html>
