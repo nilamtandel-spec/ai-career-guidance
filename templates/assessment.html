@@ -3,38 +3,94 @@
 
 {% block content %}
 
-<h1>Career Assessment</h1>
+<div class="assessment-wrapper">
+    <div class="assessment-header">
+        <h1>Career Assessment Test</h1>
+        <p>Answer all questions to get your best career recommendation.</p>
+    </div>
 
-<form method="POST">
+    <form method="POST">
 
-{% set total = questions|length %}
+        {% for q in questions %}
+        <div class="question-card">
+            <h3>Q{{ loop.index }}. {{ q.question_text }}</h3>
 
-{% for q in questions %}
-<div class="card question">
+            <label><input type="radio" name="question_{{ q.id }}" value="A" required> {{ q.option_a }}</label>
+            <label><input type="radio" name="question_{{ q.id }}" value="B"> {{ q.option_b }}</label>
+            <label><input type="radio" name="question_{{ q.id }}" value="C"> {{ q.option_c }}</label>
+            <label><input type="radio" name="question_{{ q.id }}" value="D"> {{ q.option_d }}</label>
+        </div>
+        {% endfor %}
 
-<p><strong>Q{{ loop.index }}/{{ total }}. {{ q.question_text }}</strong></p>
-
-<label><input type="radio" name="question_{{ q.id }}" value="A" required> {{ q.option_a }}</label>
-<label><input type="radio" name="question_{{ q.id }}" value="B"> {{ q.option_b }}</label>
-<label><input type="radio" name="question_{{ q.id }}" value="C"> {{ q.option_c }}</label>
-<label><input type="radio" name="question_{{ q.id }}" value="D"> {{ q.option_d }}</label>
-
+        <button type="submit" class="submit-btn">Submit Assessment</button>
+    </form>
 </div>
-{% endfor %}
-
-<button class="btn">Submit Assessment</button>
-
-</form>
 
 <style>
-.question{
-margin-bottom:20px;
+.assessment-wrapper {
+    max-width: 950px;
+    margin: 40px auto;
 }
 
-label{
-display:block;
-margin:8px 0;
-cursor:pointer;
+.assessment-header {
+    background: rgba(15, 23, 42, 0.92);
+    padding: 30px;
+    border-radius: 22px;
+    margin-bottom: 25px;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.assessment-header h1 {
+    margin-bottom: 10px;
+    color: white;
+}
+
+.assessment-header p {
+    color: #cbd5e1;
+}
+
+.question-card {
+    background: rgba(15, 23, 42, 0.92);
+    padding: 24px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+}
+
+.question-card h3 {
+    margin-bottom: 16px;
+    color: white;
+}
+
+.question-card label {
+    display: block;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.08);
+    color: #e5e7eb;
+    cursor: pointer;
+}
+
+.question-card label:hover {
+    background: rgba(56,189,248,0.18);
+}
+
+.question-card input {
+    margin-right: 8px;
+}
+
+.submit-btn {
+    padding: 15px 28px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #38bdf8, #2563eb);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
 }
 </style>
 
