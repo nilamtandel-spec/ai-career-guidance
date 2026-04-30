@@ -6,6 +6,7 @@
 <div class="result-wrapper">
 
     <div class="result-card">
+
         <h1>Your Career Assessment Result</h1>
 
         {% if result %}
@@ -45,9 +46,16 @@
 
         <canvas id="careerChart"></canvas>
 
+        <div class="action-buttons">
+            <a href="{{ url_for('assessment') }}" class="btn">Retake Assessment</a>
+            <a href="{{ url_for('chatbot') }}" class="btn">Ask AI</a>
+        </div>
+
         {% else %}
         <p>No result found. Please complete your assessment first.</p>
+        <a href="{{ url_for('assessment') }}" class="btn">Start Assessment</a>
         {% endif %}
+
     </div>
 
     <div class="history-card">
@@ -88,14 +96,18 @@ new Chart(document.getElementById("careerChart"), {
     data: {
         labels: ["Matched Score", "Remaining"],
         datasets: [{
-            data: [score, remaining]
+            data: [score, remaining],
+            backgroundColor: ["#38bdf8", "#1e293b"]
         }]
     },
     options: {
         responsive: true,
         plugins: {
             legend: {
-                position: "bottom"
+                position: "bottom",
+                labels: {
+                    color: "#ffffff"
+                }
             }
         }
     }
@@ -108,70 +120,100 @@ new Chart(document.getElementById("careerChart"), {
     max-width: 1100px;
     margin: 40px auto;
     display: grid;
-    grid-template-columns: 1fr;
     gap: 25px;
 }
 
 .result-card,
 .history-card {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+    background: rgba(15, 23, 42, 0.92);
+    padding: 32px;
+    border-radius: 22px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #ffffff;
 }
 
-.result-card h1 {
-    font-size: 30px;
+.result-card h1,
+.history-card h2 {
+    color: #ffffff;
     margin-bottom: 20px;
 }
 
 .career-badge {
     display: inline-block;
-    padding: 14px 24px;
+    padding: 14px 26px;
     background: linear-gradient(135deg, #2563eb, #38bdf8);
-    color: white;
+    color: #ffffff;
     border-radius: 30px;
     font-weight: 700;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
 .score-text {
+    color: #e5e7eb;
     font-size: 18px;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 }
 
 .suggestion {
-    background: #f8fafc;
-    padding: 22px;
-    border-radius: 16px;
-    border-left: 5px solid #2563eb;
+    background: rgba(255,255,255,0.08);
+    padding: 24px;
+    border-radius: 18px;
+    border-left: 5px solid #38bdf8;
     margin-bottom: 25px;
 }
 
 .suggestion h2 {
+    color: #ffffff;
     margin-bottom: 10px;
+}
+
+.suggestion p {
+    color: #dbeafe;
+    line-height: 1.7;
 }
 
 #careerChart {
     max-width: 360px;
-    margin: 25px auto;
+    margin: 30px auto;
+}
+
+.action-buttons {
+    margin-top: 20px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 13px 22px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #38bdf8, #2563eb);
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    margin-right: 10px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
+    color: white;
 }
 
 th,
 td {
     padding: 14px;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
     text-align: left;
 }
 
 th {
-    background: #f1f5f9;
+    color: #93c5fd;
+    background: rgba(255,255,255,0.06);
+}
+
+td {
+    color: #e5e7eb;
 }
 </style>
 
