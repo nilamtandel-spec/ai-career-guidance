@@ -1,177 +1,53 @@
 {% extends 'layout.html' %}
-{% block title %}Career Result{% endblock %}
+{% block title %}Result{% endblock %}
 
 {% block content %}
 
-<div class="result-wrapper">
+<div class="card">
 
-    <div class="result-card">
-        <h1>Your Career Assessment Result</h1>
+<h1>Your Career Result</h1>
 
-        {% if result %}
+<h2>{{ result.top_category }}</h2>
 
-        <div class="career-badge">
-            {{ result.top_category }}
-        </div>
+<p>Score: {{ result.score }}/15</p>
 
-        <p class="score-text">
-            Your matching score: <strong>{{ result.score }}/15</strong>
-        </p>
-
-        {% if "Technology" in result.top_category %}
-        <div class="suggestion">
-            <h2>Recommended Career: IT / Software</h2>
-            <p>You are suitable for careers like Software Developer, Web Developer, Data Analyst, Cyber Security Analyst, AI/ML Developer, and Cloud Engineer.</p>
-        </div>
-
-        {% elif "Design" in result.top_category %}
-        <div class="suggestion">
-            <h2>Recommended Career: Design / Animation</h2>
-            <p>You are suitable for careers like Graphic Designer, UI/UX Designer, Animator, Video Editor, Game Designer, and Creative Director.</p>
-        </div>
-
-        {% elif "Management" in result.top_category %}
-        <div class="suggestion">
-            <h2>Recommended Career: Management / Business</h2>
-            <p>You are suitable for careers like Business Manager, Marketing Executive, Entrepreneur, HR Manager, Finance Executive, and Operations Manager.</p>
-        </div>
-
-        {% else %}
-        <div class="suggestion">
-            <h2>Recommended Career: HR / Communication</h2>
-            <p>You are suitable for careers like HR Executive, Counselor, Public Relations Officer, Trainer, Teacher, Customer Success Executive, and Communication Specialist.</p>
-        </div>
-        {% endif %}
-
-        <canvas id="careerChart"></canvas>
-
-        {% else %}
-        <p>No result found. Please complete your assessment first.</p>
-        {% endif %}
-    </div>
-
-    <div class="history-card">
-        <h2>Score History</h2>
-
-        {% if history %}
-        <table>
-            <tr>
-                <th>Career</th>
-                <th>Score</th>
-                <th>Date</th>
-            </tr>
-
-            {% for item in history %}
-            <tr>
-                <td>{{ item.top_category }}</td>
-                <td>{{ item.score }}/15</td>
-                <td>{{ item.created_at }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        {% else %}
-        <p>No previous records found.</p>
-        {% endif %}
-    </div>
+<a href="/assessment" class="btn">Retake</a>
+<a href="/chatbot" class="btn">Ask AI</a>
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="card">
 
-{% if result %}
-<script>
-const score = {{ result.score }};
-const remaining = 15 - score;
+<h2>History</h2>
 
-new Chart(document.getElementById("careerChart"), {
-    type: "pie",
-    data: {
-        labels: ["Matched Score", "Remaining"],
-        datasets: [{
-            data: [score, remaining]
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: "bottom"
-            }
-        }
-    }
-});
-</script>
-{% endif %}
+<table>
+<tr>
+<th>Career</th>
+<th>Score</th>
+<th>Date</th>
+</tr>
+
+{% for h in history %}
+<tr>
+<td>{{ h.top_category }}</td>
+<td>{{ h.score }}</td>
+<td>{{ h.created_at }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+</div>
 
 <style>
-.result-wrapper {
-    max-width: 1100px;
-    margin: 40px auto;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 25px;
+table{
+width:100%;
+border-collapse:collapse;
 }
 
-.result-card,
-.history-card {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.12);
-}
-
-.result-card h1 {
-    font-size: 30px;
-    margin-bottom: 20px;
-}
-
-.career-badge {
-    display: inline-block;
-    padding: 14px 24px;
-    background: linear-gradient(135deg, #2563eb, #38bdf8);
-    color: white;
-    border-radius: 30px;
-    font-weight: 700;
-    margin-bottom: 15px;
-}
-
-.score-text {
-    font-size: 18px;
-    margin-bottom: 20px;
-}
-
-.suggestion {
-    background: #f8fafc;
-    padding: 22px;
-    border-radius: 16px;
-    border-left: 5px solid #2563eb;
-    margin-bottom: 25px;
-}
-
-.suggestion h2 {
-    margin-bottom: 10px;
-}
-
-#careerChart {
-    max-width: 360px;
-    margin: 25px auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-th,
-td {
-    padding: 14px;
-    border-bottom: 1px solid #e5e7eb;
-    text-align: left;
-}
-
-th {
-    background: #f1f5f9;
+td,th{
+padding:10px;
+border-bottom:1px solid #ccc;
 }
 </style>
 
